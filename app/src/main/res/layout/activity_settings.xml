@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
@@ -15,23 +15,23 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button5"
+            android:id="@+id/button_back"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:backgroundTint="#FFFFFF"
             app:icon="@drawable/arrow_back"
             app:iconGravity="textStart"
-            app:iconPadding="12dp"
-            app:iconSize="24dp"
-            app:iconTint="#1A1B22" />
+            app:iconPadding="@dimen/settings_icon_padding"
+            app:iconSize="@dimen/icon_size"
+            app:iconTint="@color/black_1" />
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Настройки"
-            android:textSize="22sp"
-            android:textColor="#1A1B22" />
+            android:text="@string/settings"
+            android:textColor="@color/black_1"
+            android:textSize="@dimen/main_text_size" />
 
     </LinearLayout>
 
@@ -45,11 +45,11 @@
             android:id="@+id/textView6"
             android:layout_width="320dp"
             android:layout_height="19sp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="@dimen/margin_size"
             android:layout_marginTop="21dp"
-            android:text="Темная тема"
-            android:textSize="16sp"
-            android:textColor="#000000" />
+            android:text="@string/night_theme"
+            android:textColor="@color/black"
+            android:textSize="@dimen/settings_text_size" />
 
         <Switch
             android:id="@+id/button6"
@@ -57,7 +57,7 @@
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:backgroundTint="#FFFFFF"
+            android:backgroundTint="@color/white"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     </LinearLayout>
@@ -73,9 +73,9 @@
             android:layout_height="19sp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="21dp"
-            android:text="Поделиться приложением"
-            android:textSize="16sp"
-            android:textColor="#000000" />
+            android:text="@string/share"
+            android:textColor="@color/black"
+            android:textSize="@dimen/settings_text_size" />
 
         <Button
             android:id="@+id/button7"
@@ -83,12 +83,12 @@
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:backgroundTint="#FFFFFF"
+            android:backgroundTint="@color/white"
             app:icon="@drawable/share"
             app:iconGravity="textStart"
-            app:iconPadding="12dp"
-            app:iconSize="24dp"
-            app:iconTint="#AEAFB4" />
+            app:iconPadding="@dimen/settings_icon_padding"
+            app:iconSize="@dimen/icon_size"
+            app:iconTint="@color/grey" />
 
     </LinearLayout>
 
@@ -101,11 +101,11 @@
             android:id="@+id/textView8"
             android:layout_width="320dp"
             android:layout_height="19sp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="@dimen/margin_size"
             android:layout_marginTop="21dp"
-            android:text="Написать в поддержку"
-            android:textSize="16sp"
-            android:textColor="#000000" />
+            android:text="@string/right_support"
+            android:textColor="@color/black"
+            android:textSize="@dimen/settings_text_size" />
 
         <Button
             android:id="@+id/button8"
@@ -113,12 +113,12 @@
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:backgroundTint="#FFFFFF"
+            android:backgroundTint="@color/white"
             app:icon="@drawable/support"
             app:iconGravity="textStart"
-            app:iconPadding="12dp"
-            app:iconSize="24dp"
-            app:iconTint="#AEAFB4" />
+            app:iconPadding="@dimen/settings_icon_padding"
+            app:iconSize="@dimen/icon_size"
+            app:iconTint="@color/grey" />
     </LinearLayout>
 
     <LinearLayout
@@ -130,11 +130,11 @@
             android:id="@+id/textView9"
             android:layout_width="320dp"
             android:layout_height="19sp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="@dimen/margin_size"
             android:layout_marginTop="21dp"
-            android:text="Пользовательское соглашение"
-            android:textSize="16sp"
-            android:textColor="#000000" />
+            android:text="@string/terms_of_use"
+            android:textColor="@color/black"
+            android:textSize="@dimen/settings_text_size" />
 
         <Button
             android:id="@+id/button9"
@@ -142,12 +142,12 @@
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:backgroundTint="#FFFFFF"
+            android:backgroundTint="@color/white"
             app:icon="@drawable/arrow"
             app:iconGravity="textStart"
-            app:iconPadding="12dp"
-            app:iconSize="24dp"
-            app:iconTint="#AEAFB4" />
+            app:iconPadding="@dimen/settings_icon_padding"
+            app:iconSize="@dimen/icon_size"
+            app:iconTint="@color/grey" />
     </LinearLayout>
 
 </LinearLayout>

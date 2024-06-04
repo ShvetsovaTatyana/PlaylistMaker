@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_text_size">22sp</dimen>
+    <dimen name="settings_text_size">16sp</dimen>
+    <dimen name="margin_size">16dp</dimen>
+    <dimen name="icon_size">24dp</dimen>
+    <dimen name="main_icon_padding">8dp</dimen>
+    <dimen name="settings_icon_padding">12dp</dimen>
+</resources>
