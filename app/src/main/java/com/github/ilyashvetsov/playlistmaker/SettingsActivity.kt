@@ -8,8 +8,8 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        val button_back = findViewById<Button>(R.id.button_back)
-        button_back.setOnClickListener() {
+        val buttonBack = findViewById<Button>(R.id.button_back)
+        buttonBack.setOnClickListener {
             finish()
         }
     }
