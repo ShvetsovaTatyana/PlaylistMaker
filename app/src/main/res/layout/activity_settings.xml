@@ -65,22 +65,22 @@
 
 
     <TextView
-        android:id="@+id/button7"
+        android:id="@+id/share_button"
         style="@style/settingsActivityTextView"
         android:text="@string/share"
         app:drawableEndCompat="@drawable/share"
         app:iconSize="@dimen/icon_size" />
 
     <TextView
-        android:id="@+id/button8"
+        android:id="@+id/support_button"
         style="@style/settingsActivityTextView"
-        android:text="@string/right_support"
+        android:text="@string/write_support"
         app:drawableEndCompat="@drawable/support"
         app:iconSize="@dimen/icon_size" />
 
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/terms_of_use_button"
         style="@style/settingsActivityTextView"
         android:text="@string/terms_of_use"
         app:drawableEndCompat="@drawable/arrow"
