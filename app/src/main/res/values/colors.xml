@@ -8,4 +8,10 @@
     <color name="list_settings">#FF000000</color>
     <color name="icon_settings">#AEAFB4</color>
     <color name="switch_settings">#AEAFB4</color>
+    <color name="search_title">#1A1B22</color>
+    <color name="arrow">#1A1B22</color>
+    <color name="background_arrow">#FFFFFF</color>
+    <color name="background_search_edit_text">#E6E8EB</color>
+    <color name="image_search_edit_text">#AEAFB4</color>
+    <color name="text_search_edit_text">#818C99</color>
 </resources>
