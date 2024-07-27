@@ -5,7 +5,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class TrackViewHolder(parentView: View) : RecyclerView.ViewHolder(parentView) {
     private val pictureImageView: ImageView
@@ -25,6 +26,7 @@ class TrackViewHolder(parentView: View) : RecyclerView.ViewHolder(parentView) {
             .placeholder(R.drawable.placeholder).into(pictureImageView)
         nameSingTextView.text = model.trackName
         singerTextView.text = model.artistName
-        timeSingTextView.text = model.trackTime
+        timeSingTextView.text =
+            SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis)
     }
 }
