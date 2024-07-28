@@ -7,7 +7,6 @@
     android:orientation="vertical"
     tools:context=".SearchActivity">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -54,8 +53,10 @@
             android:ems="10"
             android:fontFamily="@font/ys_display_regular"
             android:hint="@string/search"
+            android:imeOptions="actionDone"
             android:inputType="text"
             android:paddingLeft="12dp"
+            android:singleLine="true"
             android:textColor="@color/black_1"
             android:textColorHint="@color/text_search_edit_text"
             android:textSize="16dp" />
@@ -67,7 +68,8 @@
             android:layout_gravity="center_vertical"
             android:background="@android:color/transparent"
             android:visibility="invisible"
-            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+            app:tint="@color/black_1" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -75,5 +77,65 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/track_item" />
+
+    <ImageView
+        android:id="@+id/place_holder_error"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="102dp"
+        android:visibility="gone"
+        app:srcCompat="@drawable/placeholder_error" />
+
+    <TextView
+        android:id="@+id/place_holder_error_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="24dp"
+        android:fontFamily="@font/ys_display_medium"
+        android:text="@string/place_holder_error_text"
+        android:textAlignment="center"
+        android:textColor="@color/search_title"
+        android:textSize="19sp"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/place_holder_error_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/search_title"
+        android:fontFamily="@font/ys_display_medium"
+        android:text="@string/refresh"
+        android:textAllCaps="false"
+        android:textColor="@color/settings_background"
+        android:textSize="14sp"
+        android:visibility="gone"
+        app:cornerRadius="54dp" />
+
+    <ImageView
+        android:id="@+id/place_holder_empty_image"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="102dp"
+        android:visibility="gone"
+        app:srcCompat="@drawable/placeholder_empty" />
+
+    <TextView
+        android:id="@+id/place_holder_empty_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/ys_display_medium"
+        android:text="@string/place_holder_empty_text"
+        android:textColor="@color/search_title"
+        android:textSize="19sp"
+        android:visibility="gone" />
 
 </LinearLayout>
