@@ -48,7 +48,7 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         titleText = findViewById(R.id.title_text)
-        clearHistoryButton = findViewById(R.id.search_button)
+        clearHistoryButton = findViewById(R.id.clear_history_button)
         placeHolderError = findViewById(R.id.place_holder_error)
         placeHolderErrorText = findViewById(R.id.place_holder_error_text)
         placeHolderErrorButton = findViewById(R.id.place_holder_error_button)

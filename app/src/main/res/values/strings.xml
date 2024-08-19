@@ -14,4 +14,6 @@
     <string name="place_holder_error_text">Проблемы со связью \n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
     <string name="refresh">Обновить</string>
     <string name="place_holder_empty_text">Ничего не нашлось</string>
+    <string name="title_history_text">Вы искали</string>
+    <string name="clear_history_button">Очистить историю</string>
 </resources>
