@@ -55,6 +55,8 @@ class SearchActivity : AppCompatActivity() {
         placeHolderEmptyImage = findViewById(R.id.place_holder_empty_image)
         placeHolderEmptyText = findViewById(R.id.place_holder_empty_text)
         textSearch = findViewById<EditText>(R.id.text_search)
+        val sharedPrefs = getSharedPreferences(HISTORY_SHARED_PREFERENCES, MODE_PRIVATE)
+        val searchHistory: SearchHistory = SearchHistory(sharedPrefs)
         val clearButton = findViewById<ImageButton>(R.id.clear_button)
         val buttonBackArrow = findViewById<ImageButton>(R.id.button_back_arrow)
         recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
@@ -92,9 +94,20 @@ class SearchActivity : AppCompatActivity() {
                     clearButton.visibility = View.VISIBLE
                 text = s.toString()
                 clearHistoryButton.visibility =
-                    if (textSearch.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
+                    if (textSearch.hasFocus() && s?.isEmpty() == true && searchHistory.getTrackList()
+                            .isNotEmpty()
+                    ) View.VISIBLE else View.GONE
                 titleText.visibility =
-                    if (textSearch.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
+                    if (textSearch.hasFocus() && s?.isEmpty() == true && searchHistory.getTrackList()
+                            .isNotEmpty()
+                    ) View.VISIBLE else View.GONE
+                if (s?.isEmpty() == false) {
+                    adapter.trackList.clear()
+                    adapter.notifyDataSetChanged()
+                } else {
+                    adapter.trackList = searchHistory.getTrackList()
+                    adapter.notifyDataSetChanged()
+                }
             }
 
             override fun afterTextChanged(s: Editable?) = Unit
@@ -104,21 +117,32 @@ class SearchActivity : AppCompatActivity() {
         textSearch.addTextChangedListener(simpleTextWatcher)
 
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        val sharedPrefs = getSharedPreferences(HISTORY_SHARED_PREFERENCES, MODE_PRIVATE)
-        val searchHistory: SearchHistory = SearchHistory(sharedPrefs)
+
         adapter = AdapterTrack(onItemClickListener = { track -> searchHistory.saveTrack(track) })
         recyclerView.adapter = adapter
+
         clearHistoryButton.setOnClickListener {
             searchHistory.deleteTrackList()
             adapter.trackList.clear()
             adapter.notifyDataSetChanged()
+            if (searchHistory.getTrackList().isNotEmpty()) {
+                clearHistoryButton.visibility = View.VISIBLE
+                titleText.visibility = View.VISIBLE
+            } else {
+                clearHistoryButton.visibility = View.GONE
+                titleText.visibility = View.GONE
+            }
         }
 
         textSearch.setOnFocusChangeListener { view, hasFocus ->
             clearHistoryButton.visibility =
-                if (hasFocus && textSearch.text.isEmpty()) View.VISIBLE else View.GONE
+                if (hasFocus && textSearch.text.isEmpty() && searchHistory.getTrackList()
+                        .isNotEmpty()
+                ) View.VISIBLE else View.GONE
             titleText.visibility =
-                if (hasFocus && textSearch.text.isEmpty()) View.VISIBLE else View.GONE
+                if (hasFocus && textSearch.text.isEmpty() && searchHistory.getTrackList()
+                        .isNotEmpty()
+                ) View.VISIBLE else View.GONE
             if (hasFocus && textSearch.text.isEmpty()) {
                 adapter.trackList = searchHistory.getTrackList()
                 adapter.notifyDataSetChanged()
