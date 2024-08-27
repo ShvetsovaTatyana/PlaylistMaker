@@ -8,7 +8,8 @@ import com.bumptech.glide.Glide
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TrackViewHolder(parentView: View) : RecyclerView.ViewHolder(parentView) {
+class TrackViewHolder(parentView: View, private val onItemClickListener: (track: Track) -> Unit) :
+    RecyclerView.ViewHolder(parentView) {
     private val pictureImageView: ImageView
     private val nameSingTextView: TextView
     private val singerTextView: TextView
@@ -28,5 +29,8 @@ class TrackViewHolder(parentView: View) : RecyclerView.ViewHolder(parentView) {
         singerTextView.text = model.artistName
         timeSingTextView.text =
             SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis)
+        itemView.setOnClickListener {
+            onItemClickListener.invoke(model)
+        }
     }
 }

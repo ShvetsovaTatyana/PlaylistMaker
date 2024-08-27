@@ -4,12 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class AdapterTrack() : RecyclerView.Adapter<TrackViewHolder>() {
-    var trackList: List<Track> = arrayListOf()
+class AdapterTrack(private val onItemClickListener: (track: Track) -> Unit) :
+    RecyclerView.Adapter<TrackViewHolder>() {
+    var trackList: ArrayList<Track> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_item, parent, false)
-        return TrackViewHolder(view)
+        return TrackViewHolder(view, onItemClickListener)
     }
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {

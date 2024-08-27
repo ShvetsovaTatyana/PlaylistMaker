@@ -12,6 +12,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
@@ -20,6 +21,8 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
+
+const val HISTORY_SHARED_PREFERENCES = "history_shared_preferences"
 
 
 class SearchActivity : AppCompatActivity() {
@@ -30,8 +33,10 @@ class SearchActivity : AppCompatActivity() {
     lateinit var placeHolderErrorButton: Button
     lateinit var recyclerView: RecyclerView
     lateinit var textSearch: EditText
+    lateinit var clearHistoryButton: Button
+    lateinit var titleText: TextView
     var text: String = ""
-    val adapter: AdapterTrack = AdapterTrack()
+    lateinit var adapter: AdapterTrack
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://itunes.apple.com/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -42,12 +47,16 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+        titleText = findViewById(R.id.title_text)
+        clearHistoryButton = findViewById(R.id.clear_history_button)
         placeHolderError = findViewById(R.id.place_holder_error)
         placeHolderErrorText = findViewById(R.id.place_holder_error_text)
         placeHolderErrorButton = findViewById(R.id.place_holder_error_button)
         placeHolderEmptyImage = findViewById(R.id.place_holder_empty_image)
         placeHolderEmptyText = findViewById(R.id.place_holder_empty_text)
         textSearch = findViewById<EditText>(R.id.text_search)
+        val sharedPrefs = getSharedPreferences(HISTORY_SHARED_PREFERENCES, MODE_PRIVATE)
+        val searchHistory: SearchHistory = SearchHistory(sharedPrefs)
         val clearButton = findViewById<ImageButton>(R.id.clear_button)
         val buttonBackArrow = findViewById<ImageButton>(R.id.button_back_arrow)
         recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
@@ -73,6 +82,7 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
+
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) =
                 Unit
@@ -83,14 +93,61 @@ class SearchActivity : AppCompatActivity() {
                 else
                     clearButton.visibility = View.VISIBLE
                 text = s.toString()
+                clearHistoryButton.visibility =
+                    if (textSearch.hasFocus() && s?.isEmpty() == true && searchHistory.getTrackList()
+                            .isNotEmpty()
+                    ) View.VISIBLE else View.GONE
+                titleText.visibility =
+                    if (textSearch.hasFocus() && s?.isEmpty() == true && searchHistory.getTrackList()
+                            .isNotEmpty()
+                    ) View.VISIBLE else View.GONE
+                if (s?.isEmpty() == false) {
+                    adapter.trackList.clear()
+                    adapter.notifyDataSetChanged()
+                } else {
+                    adapter.trackList = searchHistory.getTrackList()
+                    adapter.notifyDataSetChanged()
+                }
             }
 
             override fun afterTextChanged(s: Editable?) = Unit
 
         }
+
         textSearch.addTextChangedListener(simpleTextWatcher)
-        recyclerView.adapter = adapter
+
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+
+        adapter = AdapterTrack(onItemClickListener = { track -> searchHistory.saveTrack(track) })
+        recyclerView.adapter = adapter
+
+        clearHistoryButton.setOnClickListener {
+            searchHistory.deleteTrackList()
+            adapter.trackList.clear()
+            adapter.notifyDataSetChanged()
+            if (searchHistory.getTrackList().isNotEmpty()) {
+                clearHistoryButton.visibility = View.VISIBLE
+                titleText.visibility = View.VISIBLE
+            } else {
+                clearHistoryButton.visibility = View.GONE
+                titleText.visibility = View.GONE
+            }
+        }
+
+        textSearch.setOnFocusChangeListener { view, hasFocus ->
+            clearHistoryButton.visibility =
+                if (hasFocus && textSearch.text.isEmpty() && searchHistory.getTrackList()
+                        .isNotEmpty()
+                ) View.VISIBLE else View.GONE
+            titleText.visibility =
+                if (hasFocus && textSearch.text.isEmpty() && searchHistory.getTrackList()
+                        .isNotEmpty()
+                ) View.VISIBLE else View.GONE
+            if (hasFocus && textSearch.text.isEmpty()) {
+                adapter.trackList = searchHistory.getTrackList()
+                adapter.notifyDataSetChanged()
+            }
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -129,7 +186,7 @@ class SearchActivity : AppCompatActivity() {
                             placeHolderErrorButton.visibility = View.GONE
                             placeHolderEmptyImage.visibility = View.GONE
                             placeHolderEmptyText.visibility = View.GONE
-                            adapter.trackList = trackList.results
+                            adapter.trackList = trackList.results as ArrayList<Track>
                             adapter.notifyDataSetChanged()
                         } else {
                             placeHolderEmptyImage.visibility = View.VISIBLE
