@@ -118,7 +118,7 @@
         android:text="Длительность"
         android:textColor="@color/song_characteristics"
         android:textSize="13sp"
-        app:layout_constraintBottom_toTopOf="@id/album"
+        app:layout_constraintBottom_toTopOf="@id/album_sing"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -126,13 +126,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="17dp"
+        android:layout_marginEnd="16dp"
         android:fontFamily="@font/ys_display_regular"
         android:text="Альбом"
         android:textColor="@color/song_characteristics"
         android:textSize="13sp"
+        app:layout_constraintTop_toBottomOf="@+id/duration"
         app:layout_constraintBottom_toTopOf="@id/year"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/album_sing"/>
 
     <TextView
         android:id="@+id/year"
@@ -189,14 +191,16 @@
 
     <TextView
         android:id="@+id/album_sing"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="17dp"
         android:fontFamily="@font/ys_display_regular"
         android:textColor="@color/title_settings"
         android:textSize="13sp"
+        android:gravity="right"
         app:layout_constraintBottom_toTopOf="@id/year_sing"
+        app:layout_constraintStart_toEndOf="@id/album"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="Yesterday (Remastered 2009)" />
 
