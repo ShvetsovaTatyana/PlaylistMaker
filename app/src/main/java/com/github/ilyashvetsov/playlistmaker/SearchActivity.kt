@@ -1,5 +1,6 @@
 package com.github.ilyashvetsov.playlistmaker
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,7 +24,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 
-const val HISTORY_SHARED_PREFERENCES = "history_shared_preferences"
+
 
 
 class SearchActivity : AppCompatActivity() {
@@ -118,7 +120,13 @@ class SearchActivity : AppCompatActivity() {
 
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
-        adapter = AdapterTrack(onItemClickListener = { track -> searchHistory.saveTrack(track) })
+        adapter = AdapterTrack(onItemClickListener = { track ->
+            searchHistory.saveTrack(track)
+            val intent = Intent(this, AudioPlayer::class.java)
+            val trackJson = Gson().toJson(track)
+            intent.putExtra(AudioPlayer.TRACK_KEY, trackJson)
+            startActivity(intent)
+        })
         recyclerView.adapter = adapter
 
         clearHistoryButton.setOnClickListener {
@@ -148,6 +156,7 @@ class SearchActivity : AppCompatActivity() {
                 adapter.notifyDataSetChanged()
             }
         }
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -205,5 +214,9 @@ class SearchActivity : AppCompatActivity() {
                     showError()
                 }
             })
+    }
+
+    companion object {
+        private const val HISTORY_SHARED_PREFERENCES = "history_shared_preferences"
     }
 }

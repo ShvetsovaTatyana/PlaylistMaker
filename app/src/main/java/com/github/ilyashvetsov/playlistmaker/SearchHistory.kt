@@ -4,9 +4,6 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-
-const val TRACK_KEY = "track_key"
-
 class SearchHistory(val sharedPrefs: SharedPreferences) {
     fun saveTrack(track: Track) {
         val gson = Gson()
@@ -39,6 +36,10 @@ class SearchHistory(val sharedPrefs: SharedPreferences) {
 
     fun deleteTrackList() {
         sharedPrefs.edit().clear().apply()
+    }
+
+    companion object {
+        private const val TRACK_KEY = "track_key"
     }
 }
 
