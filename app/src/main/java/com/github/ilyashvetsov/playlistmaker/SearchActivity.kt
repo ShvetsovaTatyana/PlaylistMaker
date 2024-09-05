@@ -24,8 +24,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 
-const val HISTORY_SHARED_PREFERENCES = "history_shared_preferences"
-const val TRACK_KEY_AUDIO_PLAYER = "track_key"
+
+
 
 class SearchActivity : AppCompatActivity() {
     lateinit var placeHolderEmptyText: TextView
@@ -124,7 +124,7 @@ class SearchActivity : AppCompatActivity() {
             searchHistory.saveTrack(track)
             val intent = Intent(this, AudioPlayer::class.java)
             val trackJson = Gson().toJson(track)
-            intent.putExtra(TRACK_KEY_AUDIO_PLAYER, trackJson)
+            intent.putExtra(AudioPlayer.TRACK_KEY, trackJson)
             startActivity(intent)
         })
         recyclerView.adapter = adapter
@@ -214,5 +214,9 @@ class SearchActivity : AppCompatActivity() {
                     showError()
                 }
             })
+    }
+
+    companion object {
+        private const val HISTORY_SHARED_PREFERENCES = "history_shared_preferences"
     }
 }

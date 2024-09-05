@@ -37,7 +37,7 @@ class AudioPlayer : AppCompatActivity() {
         val genreSing = findViewById<TextView>(R.id.genre_sing)
         val countrySing = findViewById<TextView>(R.id.country_sing)
 
-        val trackExtra = intent.getStringExtra(TRACK_KEY_AUDIO_PLAYER)
+        val trackExtra = intent.getStringExtra(TRACK_KEY)
         val trackJsonExtra = Gson().fromJson(trackExtra, Track::class.java)
 
         Glide.with(picture)
@@ -65,6 +65,10 @@ class AudioPlayer : AppCompatActivity() {
 
         genreSing.text = trackJsonExtra.primaryGenreName
         countrySing.text = trackJsonExtra.country
+    }
+
+    companion object {
+        const val TRACK_KEY = "track_key"
     }
 }
 
