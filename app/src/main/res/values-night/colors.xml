@@ -14,4 +14,7 @@
     <color name="background_search_edit_text">#FFFFFF</color>
     <color name="image_search_edit_text">#000000</color>
     <color name="text_search_edit_text">#000000</color>
+    <color name="image_button_play">#FFFFFFFF</color>
+    <color name="image_button_cirkle">#40FFFFFF</color>
+    <color name="song_characteristics">#AEAFB4</color>
 </resources>
