@@ -129,8 +129,8 @@ class SearchActivity : AppCompatActivity() {
         adapter = AdapterTrack(
             onItemClickListener = { track ->
                 if (clickDebounce()) {
-                    val intent = Intent(this, AudioPlayer::class.java)
-                    intent.putExtra(AudioPlayer.TRACK_KEY, gson.toJson(track))
+                    val intent = Intent(this, AudioPlayerActivity::class.java)
+                    intent.putExtra(AudioPlayerActivity.TRACK_KEY, gson.toJson(track))
                     startActivity(intent)
                     searchHistory.saveTrack(track)
                 }
