@@ -4,9 +4,10 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class SearchHistory(val sharedPrefs: SharedPreferences) {
+class SearchHistory(private val sharedPrefs: SharedPreferences) {
+    private val gson = Gson()
+
     fun saveTrack(track: Track) {
-        val gson = Gson()
         val trackListJson = sharedPrefs.getString(TRACK_KEY, "") ?: ""
         val trackList = if (trackListJson.isNotEmpty()) {
             val listType = object : TypeToken<ArrayList<Track>>() {}.type
@@ -15,22 +16,20 @@ class SearchHistory(val sharedPrefs: SharedPreferences) {
             arrayListOf()
         }
         trackList.add(0, track)
-        if (trackList.size <= 10) {
-        } else
+        if (trackList.size > 10) {
             trackList.removeAt(10)
+        }
         val newTrackListJson = gson.toJson(trackList)
         sharedPrefs.edit().putString(TRACK_KEY, newTrackListJson).apply()
     }
 
     fun getTrackList(): ArrayList<Track> {
-        val gson = Gson()
         val getListJson = sharedPrefs.getString(TRACK_KEY, "") ?: ""
-        if (getListJson.isNotEmpty()) {
+        return if (getListJson.isNotEmpty()) {
             val listType = object : TypeToken<ArrayList<Track>>() {}.type
-            val trackList = gson.fromJson<ArrayList<Track>>(getListJson, listType)
-            return trackList
+            Gson().fromJson(getListJson, listType)
         } else {
-            return arrayListOf()
+            arrayListOf()
         }
     }
 
@@ -42,4 +41,3 @@ class SearchHistory(val sharedPrefs: SharedPreferences) {
         private const val TRACK_KEY = "track_key"
     }
 }
-
