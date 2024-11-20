@@ -1,4 +1,4 @@
-package com.github.ilyashvetsov.playlistmaker
+package com.github.ilyashvetsov.playlistmaker.ui
 
 import android.content.res.Resources.getSystem
 import android.media.MediaPlayer
@@ -10,10 +10,11 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.postDelayed
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.github.ilyashvetsov.playlistmaker.R
+import com.github.ilyashvetsov.playlistmaker.domain.models.Track
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.time.ZoneId
@@ -75,8 +76,7 @@ class AudioPlayerActivity : AppCompatActivity() {
             albumSing.visibility = View.GONE
         }
 
-        val localDate = track.releaseDate
-            .toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+        val localDate = track.releaseDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
         yearSing.text = localDate.year.toString()
 
         genreSing.text = track.primaryGenreName

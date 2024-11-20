@@ -1,4 +1,4 @@
-package com.github.ilyashvetsov.playlistmaker
+package com.github.ilyashvetsov.playlistmaker.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -17,35 +17,31 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.github.ilyashvetsov.playlistmaker.Creator
+import com.github.ilyashvetsov.playlistmaker.R
+import com.github.ilyashvetsov.playlistmaker.domain.interactors.SearchHistoryInteractor
+import com.github.ilyashvetsov.playlistmaker.domain.models.Track
+import com.github.ilyashvetsov.playlistmaker.domain.usecases.SearchTracksUseCase
+import com.github.ilyashvetsov.playlistmaker.presentation.AdapterTrack
 import com.google.gson.Gson
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 
 class SearchActivity : AppCompatActivity() {
-    lateinit var placeHolderEmptyText: TextView
-    lateinit var placeHolderEmptyImage: ImageView
-    lateinit var placeHolderError: ImageView
-    lateinit var placeHolderErrorText: TextView
-    lateinit var placeHolderErrorButton: Button
-    lateinit var recyclerView: RecyclerView
-    lateinit var textSearch: EditText
-    lateinit var clearHistoryButton: Button
-    lateinit var titleText: TextView
-    lateinit var progressCircular: ProgressBar
+    private lateinit var placeHolderEmptyText: TextView
+    private lateinit var placeHolderEmptyImage: ImageView
+    private lateinit var placeHolderError: ImageView
+    private lateinit var placeHolderErrorText: TextView
+    private lateinit var placeHolderErrorButton: Button
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var textSearch: EditText
+    private lateinit var clearHistoryButton: Button
+    private lateinit var titleText: TextView
+    private lateinit var progressCircular: ProgressBar
 
     private var text: String = ""
-    private val gson = Gson()
     private lateinit var adapter: AdapterTrack
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("https://itunes.apple.com/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
 
-    private val itunesApiService = retrofit.create<ItunesApiService>()
+    private lateinit var searchTracksUseCase: SearchTracksUseCase
+    private lateinit var searchHistoryInteractor: SearchHistoryInteractor
 
     private val handler = Handler(Looper.getMainLooper())
     private val searchRunnable = Runnable { searchRequest() }
@@ -66,8 +62,6 @@ class SearchActivity : AppCompatActivity() {
         textSearch = findViewById(R.id.text_search)
         recyclerView = findViewById(R.id.recyclerview)
 
-        val sharedPrefs = getSharedPreferences(HISTORY_SHARED_PREFERENCES, MODE_PRIVATE)
-        val searchHistory = SearchHistory(sharedPrefs)
         val clearButton = findViewById<ImageButton>(R.id.clear_button)
         val buttonBackArrow = findViewById<ImageButton>(R.id.button_back_arrow)
 
@@ -101,7 +95,7 @@ class SearchActivity : AppCompatActivity() {
 
                 if (textSearch.hasFocus()
                     && s?.isEmpty() == true
-                    && searchHistory.getTrackList().isNotEmpty()
+                    && searchHistoryInteractor.getTrackList().isNotEmpty()
                 ) {
                     clearHistoryButton.visibility = View.VISIBLE
                     titleText.visibility = View.VISIBLE
@@ -113,7 +107,7 @@ class SearchActivity : AppCompatActivity() {
                 if (s?.isEmpty() == false) {
                     adapter.trackList.clear()
                 } else {
-                    adapter.trackList = searchHistory.getTrackList()
+                    adapter.trackList = searchHistoryInteractor.getTrackList()
                 }
 
                 adapter.notifyDataSetChanged()
@@ -125,24 +119,23 @@ class SearchActivity : AppCompatActivity() {
         textSearch.addTextChangedListener(simpleTextWatcher)
 
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-
         adapter = AdapterTrack(
             onItemClickListener = { track ->
                 if (clickDebounce()) {
                     val intent = Intent(this, AudioPlayerActivity::class.java)
-                    intent.putExtra(AudioPlayerActivity.TRACK_KEY, gson.toJson(track))
+                    intent.putExtra(AudioPlayerActivity.TRACK_KEY, Gson().toJson(track))
                     startActivity(intent)
-                    searchHistory.saveTrack(track)
+                    searchHistoryInteractor.saveTrack(track)
                 }
             }
         )
         recyclerView.adapter = adapter
 
         clearHistoryButton.setOnClickListener {
-            searchHistory.deleteTrackList()
+            searchHistoryInteractor.deleteTrackList()
             adapter.trackList.clear()
             adapter.notifyDataSetChanged()
-            if (searchHistory.getTrackList().isNotEmpty()) {
+            if (searchHistoryInteractor.getTrackList().isNotEmpty()) {
                 clearHistoryButton.visibility = View.VISIBLE
                 titleText.visibility = View.VISIBLE
             } else {
@@ -152,7 +145,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         textSearch.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus && textSearch.text.isEmpty() && searchHistory.getTrackList().isNotEmpty()) {
+            if (hasFocus && textSearch.text.isEmpty() && searchHistoryInteractor.getTrackList().isNotEmpty()) {
                 clearHistoryButton.visibility = View.VISIBLE
                 titleText.visibility = View.VISIBLE
             } else {
@@ -160,10 +153,13 @@ class SearchActivity : AppCompatActivity() {
                 titleText.visibility = View.GONE
             }
             if (hasFocus && textSearch.text.isEmpty()) {
-                adapter.trackList = searchHistory.getTrackList()
+                adapter.trackList = searchHistoryInteractor.getTrackList()
                 adapter.notifyDataSetChanged()
             }
         }
+
+        searchTracksUseCase = Creator.getSearchTracksUseCase()
+        searchHistoryInteractor = Creator.getSearchHistoryInteractor(this)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -176,7 +172,7 @@ class SearchActivity : AppCompatActivity() {
         textSearch.setText(text)
     }
 
-    fun showError() {
+    private fun showError() {
         recyclerView.visibility = View.GONE
         placeHolderError.visibility = View.VISIBLE
         placeHolderErrorText.visibility = View.VISIBLE
@@ -212,47 +208,41 @@ class SearchActivity : AppCompatActivity() {
             progressCircular.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
         } else {
-            itunesApiService.getTrackList(textSearch.text.toString())
-                .enqueue(object : Callback<ListTrackResponse> {
-                    override fun onResponse(
-                        call: Call<ListTrackResponse>,
-                        response: Response<ListTrackResponse>
-                    ) {
-                        if (response.code() == 200) {
-                            val trackList = response.body()
-                            if (trackList != null && trackList.results.isNotEmpty()) {
-                                recyclerView.visibility = View.VISIBLE
-                                placeHolderError.visibility = View.GONE
-                                placeHolderErrorText.visibility = View.GONE
-                                placeHolderErrorButton.visibility = View.GONE
-                                placeHolderEmptyImage.visibility = View.GONE
-                                placeHolderEmptyText.visibility = View.GONE
-                                progressCircular.visibility = View.GONE
-                                adapter.trackList = trackList.results as ArrayList<Track>
-                                adapter.notifyDataSetChanged()
-                            } else {
-                                placeHolderEmptyImage.visibility = View.VISIBLE
-                                placeHolderEmptyText.visibility = View.VISIBLE
-                                recyclerView.visibility = View.GONE
-                                placeHolderError.visibility = View.GONE
-                                placeHolderErrorText.visibility = View.GONE
-                                placeHolderErrorButton.visibility = View.GONE
-                                progressCircular.visibility = View.GONE
-                            }
+            searchTracksUseCase.execute(
+                expression = textSearch.text.toString(),
+                onSuccess = { trackList ->
+                    runOnUiThread {
+                        if (trackList.isNotEmpty()) {
+                            recyclerView.visibility = View.VISIBLE
+                            placeHolderError.visibility = View.GONE
+                            placeHolderErrorText.visibility = View.GONE
+                            placeHolderErrorButton.visibility = View.GONE
+                            placeHolderEmptyImage.visibility = View.GONE
+                            placeHolderEmptyText.visibility = View.GONE
+                            progressCircular.visibility = View.GONE
+                            adapter.trackList = trackList as ArrayList<Track>
+                            adapter.notifyDataSetChanged()
                         } else {
-                            showError()
+                            placeHolderEmptyImage.visibility = View.VISIBLE
+                            placeHolderEmptyText.visibility = View.VISIBLE
+                            recyclerView.visibility = View.GONE
+                            placeHolderError.visibility = View.GONE
+                            placeHolderErrorText.visibility = View.GONE
+                            placeHolderErrorButton.visibility = View.GONE
+                            progressCircular.visibility = View.GONE
                         }
                     }
-
-                    override fun onFailure(call: Call<ListTrackResponse>, t: Throwable) {
+                },
+                onFailure = {
+                    runOnUiThread {
                         showError()
                     }
-                })
+                }
+            )
         }
     }
 
     companion object {
-        private const val HISTORY_SHARED_PREFERENCES = "history_shared_preferences"
         private const val SEARCH_DEBOUNCE_DELAY = 1000L
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }

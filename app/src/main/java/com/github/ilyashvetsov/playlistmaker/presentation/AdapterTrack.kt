@@ -1,8 +1,10 @@
-package com.github.ilyashvetsov.playlistmaker
+package com.github.ilyashvetsov.playlistmaker.presentation
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.github.ilyashvetsov.playlistmaker.R
+import com.github.ilyashvetsov.playlistmaker.domain.models.Track
 
 class AdapterTrack(private val onItemClickListener: (track: Track) -> Unit) :
     RecyclerView.Adapter<TrackViewHolder>() {
