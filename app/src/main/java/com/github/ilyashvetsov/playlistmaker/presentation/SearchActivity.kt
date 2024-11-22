@@ -1,4 +1,4 @@
-package com.github.ilyashvetsov.playlistmaker.ui
+package com.github.ilyashvetsov.playlistmaker.presentation
 
 import android.content.Intent
 import android.os.Bundle
@@ -22,7 +22,6 @@ import com.github.ilyashvetsov.playlistmaker.R
 import com.github.ilyashvetsov.playlistmaker.domain.interactors.SearchHistoryInteractor
 import com.github.ilyashvetsov.playlistmaker.domain.models.Track
 import com.github.ilyashvetsov.playlistmaker.domain.usecases.SearchTracksUseCase
-import com.github.ilyashvetsov.playlistmaker.presentation.AdapterTrack
 import com.google.gson.Gson
 
 class SearchActivity : AppCompatActivity() {

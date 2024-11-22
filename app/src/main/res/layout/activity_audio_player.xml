@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.AudioPlayerActivity">
+    tools:context=".presentation.AudioPlayerActivity">
 
     <ImageView
         android:id="@+id/button_back_arrow"
@@ -25,6 +25,7 @@
         android:layout_marginTop="46dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
+        app:layout_constraintDimensionRatio="1"
         app:cornerRadius="8dp"
         app:layout_constraintBottom_toTopOf="@id/name_sing"
         app:layout_constraintEnd_toEndOf="parent"

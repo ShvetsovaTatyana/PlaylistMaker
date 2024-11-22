@@ -1,4 +1,4 @@
-package com.github.ilyashvetsov.playlistmaker.ui
+package com.github.ilyashvetsov.playlistmaker.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
