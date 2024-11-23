@@ -1,13 +1,17 @@
-package com.github.ilyashvetsov.playlistmaker
+package com.github.ilyashvetsov.playlistmaker.data.repository
 
 import android.content.SharedPreferences
+import com.github.ilyashvetsov.playlistmaker.domain.models.Track
+import com.github.ilyashvetsov.playlistmaker.domain.repository.SearchHistoryRepository
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class SearchHistory(private val sharedPrefs: SharedPreferences) {
+class SearchHistoryRepositoryImpl(
+    private val sharedPrefs: SharedPreferences
+): SearchHistoryRepository {
     private val gson = Gson()
 
-    fun saveTrack(track: Track) {
+    override fun saveTrack(track: Track) {
         val trackListJson = sharedPrefs.getString(TRACK_KEY, "") ?: ""
         val trackList = if (trackListJson.isNotEmpty()) {
             val listType = object : TypeToken<ArrayList<Track>>() {}.type
@@ -23,7 +27,7 @@ class SearchHistory(private val sharedPrefs: SharedPreferences) {
         sharedPrefs.edit().putString(TRACK_KEY, newTrackListJson).apply()
     }
 
-    fun getTrackList(): ArrayList<Track> {
+    override fun getTrackList(): ArrayList<Track> {
         val getListJson = sharedPrefs.getString(TRACK_KEY, "") ?: ""
         return if (getListJson.isNotEmpty()) {
             val listType = object : TypeToken<ArrayList<Track>>() {}.type
@@ -33,7 +37,7 @@ class SearchHistory(private val sharedPrefs: SharedPreferences) {
         }
     }
 
-    fun deleteTrackList() {
+    override fun deleteTrackList() {
         sharedPrefs.edit().clear().apply()
     }
 

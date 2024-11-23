@@ -1,11 +1,14 @@
-package com.github.ilyashvetsov.playlistmaker
+package com.github.ilyashvetsov.playlistmaker.presentation
 
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Switch
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.github.ilyashvetsov.playlistmaker.App
+import com.github.ilyashvetsov.playlistmaker.R
 import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {

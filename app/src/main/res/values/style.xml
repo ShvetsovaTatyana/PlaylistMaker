@@ -27,4 +27,13 @@
         <item name="android:textSize">@dimen/settings_text_size</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
+
+    <style name="settingsSwitch" parent="Theme.AppCompat.Light">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">@color/YP_Blue</item>
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">#AEAFB4</item>
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">#E6E8EB</item>
+    </style>
 </resources>
