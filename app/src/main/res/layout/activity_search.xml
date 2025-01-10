@@ -22,7 +22,6 @@
             app:tint="@color/arrow" />
 
         <TextView
-            android:id="@+id/textView2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -70,7 +69,7 @@
             android:layout_height="36dp"
             android:layout_gravity="center_vertical"
             android:background="@android:color/transparent"
-            android:visibility="invisible"
+            android:visibility="gone"
             app:srcCompat="@drawable/ic_clear"
             app:tint="@color/image_search_edit_text" />
 
@@ -83,7 +82,7 @@
         android:layout_marginTop="24dp">
 
         <TextView
-            android:id="@+id/title_text"
+            android:id="@+id/history_title_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -96,7 +95,7 @@
             android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview"
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -186,6 +185,6 @@
         android:indeterminateTint="@color/main_background"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="102dp"
-        android:visibility="invisible" />
+        android:visibility="gone" />
 
 </LinearLayout>
