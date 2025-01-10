@@ -1,6 +1,7 @@
 package com.github.ilyashvetsov.playlistmaker.player.ui
 
 import android.content.res.Resources.getSystem
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -36,9 +37,8 @@ class AudioPlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val trackJson = intent.getStringExtra(TRACK_KEY)
-        val track = Gson().fromJson(trackJson, Track::class.java)
+        val track = intent.getParcelableExtra<Track>(TRACK_KEY)
+            ?: throw Exception("track is null")
 
         with(binding) {
             nameSing.text = track.trackName
@@ -101,6 +101,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     companion object {
         const val TRACK_KEY = "track_key"
 
+        // TODO use TypedValue.applyDimension
         private val Int.px: Int get() = (this * getSystem().displayMetrics.density).toInt()
     }
 }

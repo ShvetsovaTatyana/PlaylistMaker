@@ -7,9 +7,9 @@ sealed class SearchScreenState {
 
     object Loading : SearchScreenState()
 
-    class SearchData(val trackList: ArrayList<Track>) : SearchScreenState()
+    class SearchData(val trackList: List<Track>) : SearchScreenState()
 
-    class HistoryData(val trackList: ArrayList<Track>) : SearchScreenState()
+    class HistoryData(val trackList: List<Track>) : SearchScreenState()
 
     object Empty : SearchScreenState()
 

@@ -13,6 +13,7 @@ import java.util.Locale
 class AudioPlayerViewModel(
     private val audioPlayerInteractor: AudioPlayerInteractor
 ) : ViewModel() {
+    private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
 
     private val _playerState = MutableLiveData(STATE_DEFAULT)
     val playerState: LiveData<Int> = _playerState
@@ -31,7 +32,7 @@ class AudioPlayerViewModel(
                 _timeSing.value = "00:00"
             },
             onUpdateUI = { currentPosition ->
-                _timeSing.value = SimpleDateFormat("mm:ss", Locale.getDefault()).format(currentPosition)
+                _timeSing.value = dateFormat.format(currentPosition)
             }
         )
     }

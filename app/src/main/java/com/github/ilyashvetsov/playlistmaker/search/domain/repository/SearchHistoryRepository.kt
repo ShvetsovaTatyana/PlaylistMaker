@@ -4,6 +4,6 @@ import com.github.ilyashvetsov.playlistmaker.search.domain.model.Track
 
 interface SearchHistoryRepository {
     fun saveTrack(track: Track)
-    fun getTrackList(): ArrayList<Track>
+    fun getTrackList(): List<Track>
     fun clearTrackList()
 }

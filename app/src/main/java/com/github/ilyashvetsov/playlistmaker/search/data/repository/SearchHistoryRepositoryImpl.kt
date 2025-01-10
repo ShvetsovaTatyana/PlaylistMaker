@@ -16,8 +16,8 @@ class SearchHistoryRepositoryImpl(
         val trackList = getTrackList()
         trackList.removeIf { it.trackId == track.trackId }
         trackList.add(0, track)
-        if (trackList.size > 10) {
-            trackList.removeAt(10)
+        if (trackList.size > HISTORY_SIZE) {
+            trackList.removeAt(HISTORY_SIZE)
         }
         val trackListJson = gson.toJson(trackList)
         sharedPrefs.edit { putString(TRACK_KEY, trackListJson) }
@@ -27,7 +27,7 @@ class SearchHistoryRepositoryImpl(
         val trackListJson = sharedPrefs.getString(TRACK_KEY, "") ?: ""
         return if (trackListJson.isNotEmpty()) {
             val listType = object : TypeToken<ArrayList<Track>>() {}.type
-            Gson().fromJson(trackListJson, listType)
+            gson.fromJson(trackListJson, listType)
         } else {
             arrayListOf()
         }
@@ -39,5 +39,6 @@ class SearchHistoryRepositoryImpl(
 
     companion object {
         private const val TRACK_KEY = "track_key"
+        private const val HISTORY_SIZE = 10
     }
 }

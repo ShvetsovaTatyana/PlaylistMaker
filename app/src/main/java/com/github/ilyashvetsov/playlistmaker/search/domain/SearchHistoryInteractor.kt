@@ -5,7 +5,7 @@ import com.github.ilyashvetsov.playlistmaker.search.domain.repository.SearchHist
 
 interface SearchHistoryInteractor {
     fun saveTrack(track: Track)
-    fun getTrackList(): ArrayList<Track>
+    fun getTrackList(): List<Track>
     fun clearTrackList()
 }
 
@@ -17,7 +17,7 @@ class SearchHistoryInteractorImpl(
         repository.saveTrack(track)
     }
 
-    override fun getTrackList(): ArrayList<Track> {
+    override fun getTrackList(): List<Track> {
         return repository.getTrackList()
     }
 

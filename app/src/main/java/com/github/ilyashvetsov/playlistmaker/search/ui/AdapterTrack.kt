@@ -9,7 +9,7 @@ import com.github.ilyashvetsov.playlistmaker.search.domain.model.Track
 class AdapterTrack(
     private val onItemClickListener: (track: Track) -> Unit
 ) : RecyclerView.Adapter<TrackViewHolder>() {
-    var trackList: ArrayList<Track> = arrayListOf()
+    var trackList: List<Track> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

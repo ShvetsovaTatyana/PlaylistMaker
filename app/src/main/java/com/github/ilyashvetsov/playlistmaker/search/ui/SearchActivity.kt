@@ -15,7 +15,6 @@ import com.github.ilyashvetsov.playlistmaker.creator.Creator
 import com.github.ilyashvetsov.playlistmaker.databinding.ActivitySearchBinding
 import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerActivity
 import com.github.ilyashvetsov.playlistmaker.search.domain.model.Track
-import com.google.gson.Gson
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySearchBinding
@@ -87,60 +86,62 @@ class SearchActivity : AppCompatActivity() {
             when (state) {
                 SearchScreenState.Init -> {
                     clearAdapterData()
-                    handleViewsVisibility(setOf(0))
+                    handleViewsVisibility(ViewType.RECYCLER_VIEW)
                 }
 
                 SearchScreenState.Loading -> {
-                    handleViewsVisibility(setOf(2))
+                    handleViewsVisibility(ViewType.LOADER)
                 }
 
                 is SearchScreenState.SearchData -> {
-                    handleViewsVisibility(setOf(0))
+                    handleViewsVisibility(ViewType.RECYCLER_VIEW)
                     setDataToAdapter(state.trackList)
                 }
 
                 is SearchScreenState.HistoryData -> {
-                    handleViewsVisibility(setOf(0, 1))
+                    handleViewsVisibility(setOf(ViewType.RECYCLER_VIEW, ViewType.HISTORY))
                     setDataToAdapter(state.trackList)
                 }
 
                 SearchScreenState.Empty -> {
-                    handleViewsVisibility(setOf(3))
+                    handleViewsVisibility(ViewType.EMPTY)
                 }
 
                 is SearchScreenState.Error -> {
-                    handleViewsVisibility(setOf(4))
+                    handleViewsVisibility(ViewType.ERROR)
                 }
             }
         }
     }
 
-    private fun handleViewsVisibility(visibleIndexes: Set<Int>) = with(binding) {
-        recyclerView.isVisible = 0 in visibleIndexes
+    private fun handleViewsVisibility(visibleViewType: ViewType) {
+        handleViewsVisibility(setOf(visibleViewType))
+    }
 
-        clearHistoryButton.isVisible = 1 in visibleIndexes
-        historyTitleText.isVisible = 1 in visibleIndexes
+    private fun handleViewsVisibility(visibleViewTypes: Set<ViewType>) = with(binding) {
+        recyclerView.isVisible = ViewType.RECYCLER_VIEW in visibleViewTypes
 
-        progressCircular.isVisible = 2 in visibleIndexes
+        clearHistoryButton.isVisible = ViewType.HISTORY in visibleViewTypes
+        historyTitleText.isVisible = ViewType.HISTORY in visibleViewTypes
 
-        placeHolderEmptyImage.isVisible = 3 in visibleIndexes
-        placeHolderEmptyText.isVisible = 3 in visibleIndexes
+        progressCircular.isVisible = ViewType.LOADER in visibleViewTypes
 
-        placeHolderError.isVisible = 4 in visibleIndexes
-        placeHolderErrorText.isVisible = 4 in visibleIndexes
-        placeHolderErrorButton.isVisible = 4 in visibleIndexes
+        placeHolderEmptyImage.isVisible = ViewType.EMPTY in visibleViewTypes
+        placeHolderEmptyText.isVisible = ViewType.EMPTY in visibleViewTypes
+
+        placeHolderError.isVisible = ViewType.ERROR in visibleViewTypes
+        placeHolderErrorText.isVisible = ViewType.ERROR in visibleViewTypes
+        placeHolderErrorButton.isVisible = ViewType.ERROR in visibleViewTypes
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun setDataToAdapter(trackList: ArrayList<Track>) {
+    private fun setDataToAdapter(trackList: List<Track>) {
         adapter.trackList = trackList
         adapter.notifyDataSetChanged()
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun clearAdapterData() {
-        adapter.trackList.clear()
-        adapter.notifyDataSetChanged()
+        setDataToAdapter(trackList = emptyList())
     }
 
     private fun searchRequest() {
@@ -165,7 +166,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun openAudioPlayer(track: Track) {
         val intent = Intent(this, AudioPlayerActivity::class.java)
-        intent.putExtra(AudioPlayerActivity.TRACK_KEY, Gson().toJson(track))
+        intent.putExtra(AudioPlayerActivity.TRACK_KEY, track)
         startActivity(intent)
     }
 
@@ -178,5 +179,13 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 1000L
         private const val CLICK_DEBOUNCE_DELAY = 1000L
+    }
+
+    private enum class ViewType {
+        RECYCLER_VIEW,
+        HISTORY,
+        LOADER,
+        EMPTY,
+        ERROR
     }
 }

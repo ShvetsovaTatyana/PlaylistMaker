@@ -9,7 +9,7 @@ class SearchTracksUseCase(private val trackRepository: TrackRepository) {
 
     fun execute(
         expression: String,
-        onSuccess: (ArrayList<Track>) -> Unit,
+        onSuccess: (List<Track>) -> Unit,
         onFailure: (Throwable) -> Unit
     ) {
         executor.execute {
