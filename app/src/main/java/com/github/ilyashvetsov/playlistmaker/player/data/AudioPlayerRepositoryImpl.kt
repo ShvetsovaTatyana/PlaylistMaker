@@ -5,9 +5,9 @@ import android.os.Handler
 import android.os.Looper
 import com.github.ilyashvetsov.playlistmaker.player.domain.AudioPlayerRepository
 
-class AudioPlayerRepositoryImpl: AudioPlayerRepository {
-    private val mediaPlayer = MediaPlayer()
-
+class AudioPlayerRepositoryImpl(
+    private val mediaPlayer: MediaPlayer
+): AudioPlayerRepository {
     private var updateUI: ((Int) -> Unit)? = null
     private val handler = Handler(Looper.getMainLooper())
     private val runnable = object : Runnable {

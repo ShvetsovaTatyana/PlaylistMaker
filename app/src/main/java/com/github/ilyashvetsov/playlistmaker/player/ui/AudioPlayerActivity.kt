@@ -1,37 +1,26 @@
 package com.github.ilyashvetsov.playlistmaker.player.ui
 
 import android.content.res.Resources.getSystem
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.github.ilyashvetsov.playlistmaker.creator.Creator
 import com.github.ilyashvetsov.playlistmaker.R
 import com.github.ilyashvetsov.playlistmaker.databinding.ActivityAudioPlayerBinding
 import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerViewModel.Companion.STATE_PAUSED
 import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerViewModel.Companion.STATE_PLAYING
 import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerViewModel.Companion.STATE_PREPARED
 import com.github.ilyashvetsov.playlistmaker.search.domain.model.Track
-import com.google.gson.Gson
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.time.ZoneId
 import java.util.Locale
 
 class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAudioPlayerBinding
-
-    private val viewModel by lazy {
-        ViewModelProvider(
-            owner = this,
-            factory = AudioPlayerViewModel.getViewModelFactory(
-                Creator.getAudioPlayerInteractor()
-            )
-        )[AudioPlayerViewModel::class.java]
-    }
+    private val viewModel by viewModel<AudioPlayerViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
