@@ -182,7 +182,7 @@
         android:id="@+id/progress_circular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminateTint="@color/main_background"
+        android:indeterminateTint="@color/YP_Blue"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="102dp"
         android:visibility="gone" />

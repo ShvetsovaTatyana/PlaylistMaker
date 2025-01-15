@@ -8,16 +8,16 @@ import android.os.Looper
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.github.ilyashvetsov.playlistmaker.creator.Creator
 import com.github.ilyashvetsov.playlistmaker.databinding.ActivitySearchBinding
 import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerActivity
 import com.github.ilyashvetsov.playlistmaker.search.domain.model.Track
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySearchBinding
+    private val viewModel by viewModel<SearchViewModel>()
 
     private val adapter: AdapterTrack by lazy {
         AdapterTrack { track ->
@@ -26,16 +26,6 @@ class SearchActivity : AppCompatActivity() {
                 openAudioPlayer(track)
             }
         }
-    }
-
-    private val viewModel by lazy {
-        ViewModelProvider(
-            owner = this,
-            factory = SearchViewModel.getViewModelFactory(
-                searchTracksUseCase = Creator.getSearchTracksUseCase(),
-                searchHistoryInteractor = Creator.getSearchHistoryInteractor(this)
-            )
-        )[SearchViewModel::class.java]
     }
 
     private val handler = Handler(Looper.getMainLooper())
