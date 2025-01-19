@@ -36,4 +36,11 @@
         <!-- inactive track color (30% transparency) -->
         <item name="android:colorForeground">#E6E8EB</item>
     </style>
+
+    <style name="tabLayoutTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 </resources>
