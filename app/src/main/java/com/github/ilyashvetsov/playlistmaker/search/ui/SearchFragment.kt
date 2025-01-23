@@ -51,9 +51,8 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         with(binding) {
-            recyclerView.layoutManager = LinearLayoutManager(this@SearchFragment.context, RecyclerView.VERTICAL, false)
+            recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             recyclerView.adapter = adapter
 
             clearButton.setOnClickListener {
@@ -71,10 +70,11 @@ class SearchFragment : Fragment() {
         handleScreenState()
     }
 
-    override fun onResume() {
-        super.onResume()
-
+    override fun onStart() {
+        super.onStart()
         with(binding) {
+            clearButton.isVisible = textSearch.text.isNotEmpty()
+
             textSearch.addTextChangedListener(textWatcher)
 
             textSearch.setOnFocusChangeListener { _, hasFocus ->
@@ -86,14 +86,14 @@ class SearchFragment : Fragment() {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onStop() {
+        super.onStop()
         binding.textSearch.removeTextChangedListener(textWatcher)
         binding.textSearch.onFocusChangeListener = null
     }
 
     private fun handleScreenState() {
-        viewModel.screenState.observe(this@SearchFragment.viewLifecycleOwner) { state ->
+        viewModel.screenState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 SearchScreenState.Init -> {
                     clearAdapterData()
@@ -176,7 +176,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun openAudioPlayer(track: Track) {
-        val intent = Intent(this.context, AudioPlayerActivity::class.java)
+        val intent = Intent(context, AudioPlayerActivity::class.java)
         intent.putExtra(AudioPlayerActivity.TRACK_KEY, track)
         startActivity(intent)
     }
