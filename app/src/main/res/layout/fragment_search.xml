@@ -5,34 +5,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/screen_background">
+    android:background="@color/screen_background"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
         android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/button_back_arrow"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@color/screen_background"
-            app:srcCompat="@drawable/arrow_back"
-            app:tint="@color/arrow" />
-
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginStart="12dp"
-            android:fontFamily="@font/ys_display_medium"
+            android:layout_marginHorizontal="16dp"
             android:gravity="center_vertical"
+            android:fontFamily="@font/ys_display_medium"
             android:text="@string/search"
             android:textColor="@color/search_title"
             android:textSize="22sp" />
 
-    </LinearLayout>
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
