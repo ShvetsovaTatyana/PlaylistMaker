@@ -3,9 +3,6 @@ package com.github.ilyashvetsov.playlistmaker.player.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.github.ilyashvetsov.playlistmaker.player.domain.AudioPlayerInteractor
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -68,13 +65,5 @@ class AudioPlayerViewModel(
         const val STATE_PREPARED = 1
         const val STATE_PLAYING = 2
         const val STATE_PAUSED = 3
-
-        fun getViewModelFactory(
-            audioPlayerInteractor: AudioPlayerInteractor
-        ): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                AudioPlayerViewModel(audioPlayerInteractor)
-            }
-        }
     }
 }
