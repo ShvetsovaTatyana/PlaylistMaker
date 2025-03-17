@@ -4,18 +4,17 @@ import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
 import com.github.ilyashvetsov.playlistmaker.player.domain.AudioPlayerRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class AudioPlayerRepositoryImpl(
     private val mediaPlayer: MediaPlayer
 ): AudioPlayerRepository {
     private var updateUI: ((Int) -> Unit)? = null
-    private val handler = Handler(Looper.getMainLooper())
-    private val runnable = object : Runnable {
-        override fun run() {
-            updateUI?.invoke(mediaPlayer.currentPosition)
-            handler.postDelayed(this, RUNNABLE_DELAY)
-        }
-    }
+    private var job: Job? = null
 
     override fun preparePlayer(
         url: String,
@@ -30,26 +29,32 @@ class AudioPlayerRepositoryImpl(
         }
         mediaPlayer.setOnCompletionListener {
             onCompletion()
-            handler.removeCallbacks(runnable)
+            job?.cancel()
         }
         updateUI = onUpdateUI
     }
 
     override fun startPlayer() {
         mediaPlayer.start()
-        handler.postDelayed(runnable, RUNNABLE_DELAY)
+        job = CoroutineScope(Dispatchers.Default).launch {
+            while (mediaPlayer.isPlaying) {
+                updateUI?.invoke(mediaPlayer.currentPosition)
+                delay(JOB_DELAY)
+            }
+        }
     }
 
     override fun pausePlayer() {
         mediaPlayer.pause()
-        handler.removeCallbacks(runnable)
+        job?.cancel()
     }
 
     override fun releasePlayer() {
         mediaPlayer.release()
+        job?.cancel()
     }
 
     companion object {
-        private const val RUNNABLE_DELAY = 300L
+        private const val JOB_DELAY = 300L
     }
 }
