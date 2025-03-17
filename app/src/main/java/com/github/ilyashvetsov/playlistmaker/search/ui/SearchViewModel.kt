@@ -3,9 +3,11 @@ package com.github.ilyashvetsov.playlistmaker.search.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.github.ilyashvetsov.playlistmaker.search.domain.SearchHistoryInteractor
 import com.github.ilyashvetsov.playlistmaker.search.domain.SearchTracksUseCase
 import com.github.ilyashvetsov.playlistmaker.search.domain.model.Track
+import kotlinx.coroutines.launch
 
 class SearchViewModel(
     private val searchTracksUseCase: SearchTracksUseCase,
@@ -20,23 +22,26 @@ class SearchViewModel(
             handleEmptySearchText()
         } else {
             _screenState.value = SearchScreenState.Loading
-            searchTracksUseCase.execute(
-                expression = expression,
-                onSuccess = { trackList ->
-                    _screenState.postValue(
-                        if (trackList.isEmpty()) {
-                            SearchScreenState.Empty
-                        } else {
-                            SearchScreenState.SearchData(trackList)
+            viewModelScope.launch {
+                searchTracksUseCase
+                    .execute(expression)
+                    .collect { pair ->
+                        pair.first?.let { trackList ->
+                            _screenState.postValue(
+                                if (trackList.isEmpty()) {
+                                    SearchScreenState.Empty
+                                } else {
+                                    SearchScreenState.SearchData(trackList)
+                                }
+                            )
                         }
-                    )
-                },
-                onFailure = { error ->
-                    _screenState.postValue(
-                        SearchScreenState.Error(error)
-                    )
-                }
-            )
+                        pair.second?.let { error ->
+                            _screenState.postValue(
+                                SearchScreenState.Error(error)
+                            )
+                        }
+                    }
+            }
         }
     }
 
