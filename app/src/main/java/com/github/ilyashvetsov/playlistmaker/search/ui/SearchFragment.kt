@@ -1,23 +1,32 @@
 package com.github.ilyashvetsov.playlistmaker.search.ui
 
 import android.annotation.SuppressLint
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.github.ilyashvetsov.playlistmaker.databinding.ActivitySearchBinding
+import com.github.ilyashvetsov.playlistmaker.databinding.FragmentSearchBinding
 import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerActivity
 import com.github.ilyashvetsov.playlistmaker.search.domain.model.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity() {
-    private lateinit var binding: ActivitySearchBinding
+class SearchFragment : Fragment() {
+    private lateinit var binding: FragmentSearchBinding
     private val viewModel by viewModel<SearchViewModel>()
+
+    private val textWatcher = MyTextWatcher { text, _, _, _ ->
+        searchDebounce()
+        binding.clearButton.isVisible = text.isNotEmpty()
+    }
 
     private val adapter: AdapterTrack by lazy {
         AdapterTrack { track ->
@@ -32,16 +41,20 @@ class SearchActivity : AppCompatActivity() {
     private val searchRunnable = Runnable { searchRequest() }
     private var isTrackClickAllowed = true
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentSearchBinding.inflate(layoutInflater)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            recyclerView.layoutManager = LinearLayoutManager(this@SearchActivity, RecyclerView.VERTICAL, false)
+            recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             recyclerView.adapter = adapter
 
-            buttonBackArrow.setOnClickListener { finish() }
             clearButton.setOnClickListener {
                 textSearch.setText("")
                 viewModel.clearButtonClick()
@@ -53,13 +66,16 @@ class SearchActivity : AppCompatActivity() {
             }
 
             placeHolderErrorButton.setOnClickListener { searchRequest() }
+        }
+        handleScreenState()
+    }
 
-            textSearch.addTextChangedListener(
-                MyTextWatcher { text, _, _, _ ->
-                    searchDebounce()
-                    clearButton.isVisible = text.isNotEmpty()
-                }
-            )
+    override fun onStart() {
+        super.onStart()
+        with(binding) {
+            clearButton.isVisible = textSearch.text.isNotEmpty()
+
+            textSearch.addTextChangedListener(textWatcher)
 
             textSearch.setOnFocusChangeListener { _, hasFocus ->
                 viewModel.changeFocus(
@@ -68,11 +84,16 @@ class SearchActivity : AppCompatActivity() {
                 )
             }
         }
-        handleScreenState()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding.textSearch.removeTextChangedListener(textWatcher)
+        binding.textSearch.onFocusChangeListener = null
     }
 
     private fun handleScreenState() {
-        viewModel.screenState.observe(this@SearchActivity) { state ->
+        viewModel.screenState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 SearchScreenState.Init -> {
                     clearAdapterData()
@@ -155,15 +176,15 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun openAudioPlayer(track: Track) {
-        val intent = Intent(this, AudioPlayerActivity::class.java)
+        val intent = Intent(context, AudioPlayerActivity::class.java)
         intent.putExtra(AudioPlayerActivity.TRACK_KEY, track)
         startActivity(intent)
     }
 
     private fun hideKeyboard() = with(binding) {
         textSearch.clearFocus()
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(textSearch.windowToken, 0)
+        val imm = context?.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm?.hideSoftInputFromWindow(textSearch.windowToken, 0)
     }
 
     companion object {

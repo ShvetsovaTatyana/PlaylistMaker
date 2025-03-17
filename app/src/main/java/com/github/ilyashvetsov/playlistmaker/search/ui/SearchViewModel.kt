@@ -3,9 +3,6 @@ package com.github.ilyashvetsov.playlistmaker.search.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.github.ilyashvetsov.playlistmaker.search.domain.SearchHistoryInteractor
 import com.github.ilyashvetsov.playlistmaker.search.domain.SearchTracksUseCase
 import com.github.ilyashvetsov.playlistmaker.search.domain.model.Track
@@ -69,17 +66,6 @@ class SearchViewModel(
             SearchScreenState.Init
         } else {
             SearchScreenState.HistoryData(historyTrackList)
-        }
-    }
-
-    companion object {
-        fun getViewModelFactory(
-            searchTracksUseCase: SearchTracksUseCase,
-            searchHistoryInteractor: SearchHistoryInteractor
-        ): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SearchViewModel(searchTracksUseCase, searchHistoryInteractor)
-            }
         }
     }
 }
