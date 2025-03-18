@@ -13,5 +13,5 @@ sealed class SearchScreenState {
 
     object Empty : SearchScreenState()
 
-    class Error(val error: Throwable) : SearchScreenState()
+    class Error(val message: String) : SearchScreenState()
 }

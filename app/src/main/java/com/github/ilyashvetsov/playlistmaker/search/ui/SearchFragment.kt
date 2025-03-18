@@ -4,19 +4,21 @@ import android.annotation.SuppressLint
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ilyashvetsov.playlistmaker.databinding.FragmentSearchBinding
 import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerActivity
 import com.github.ilyashvetsov.playlistmaker.search.domain.model.Track
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
@@ -37,8 +39,7 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private val handler = Handler(Looper.getMainLooper())
-    private val searchRunnable = Runnable { searchRequest() }
+    private var searchJob: Job? = null
     private var isTrackClickAllowed = true
 
     override fun onCreateView(
@@ -162,15 +163,21 @@ class SearchFragment : Fragment() {
     }
 
     private fun searchDebounce() {
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        searchJob?.cancel()
+        searchJob = lifecycleScope.launch {
+            delay(SEARCH_DEBOUNCE_DELAY)
+            searchRequest()
+        }
     }
 
     private fun trackClickDebounce(): Boolean {
         val current = isTrackClickAllowed
         if (isTrackClickAllowed) {
             isTrackClickAllowed = false
-            handler.postDelayed({ isTrackClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+            lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isTrackClickAllowed = true
+            }
         }
         return current
     }

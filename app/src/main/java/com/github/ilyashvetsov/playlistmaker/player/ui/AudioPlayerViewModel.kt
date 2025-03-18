@@ -29,7 +29,7 @@ class AudioPlayerViewModel(
                 _timeSing.value = "00:00"
             },
             onUpdateUI = { currentPosition ->
-                _timeSing.value = dateFormat.format(currentPosition)
+                _timeSing.postValue(dateFormat.format(currentPosition))
             }
         )
     }

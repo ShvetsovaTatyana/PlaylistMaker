@@ -2,22 +2,22 @@ package com.github.ilyashvetsov.playlistmaker.search.domain
 
 import com.github.ilyashvetsov.playlistmaker.search.domain.model.Track
 import com.github.ilyashvetsov.playlistmaker.search.domain.repository.TrackRepository
-import java.util.concurrent.Executors
+import com.github.ilyashvetsov.playlistmaker.util.Resource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class SearchTracksUseCase(private val trackRepository: TrackRepository) {
-    private val executor = Executors.newCachedThreadPool()
 
-    fun execute(
-        expression: String,
-        onSuccess: (List<Track>) -> Unit,
-        onFailure: (Throwable) -> Unit
-    ) {
-        executor.execute {
-            try {
-                val tracks = trackRepository.searchTracks(expression)
-                onSuccess(tracks)
-            } catch (e: Throwable) {
-                onFailure(e)
+    fun execute(expression: String): Flow<Pair<List<Track>?, String?>> {
+        return trackRepository.searchTracks(expression).map { result ->
+            when (result) {
+                is Resource.Success -> {
+                    Pair(result.data, null)
+                }
+
+                is Resource.Error -> {
+                    Pair(null, result.message)
+                }
             }
         }
     }
