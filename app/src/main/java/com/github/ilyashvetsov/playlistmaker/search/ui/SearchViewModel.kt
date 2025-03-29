@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.ilyashvetsov.playlistmaker.search.domain.SearchHistoryInteractor
 import com.github.ilyashvetsov.playlistmaker.search.domain.SearchTracksUseCase
-import com.github.ilyashvetsov.playlistmaker.search.domain.model.Track
+import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
 import kotlinx.coroutines.launch
 
 class SearchViewModel(

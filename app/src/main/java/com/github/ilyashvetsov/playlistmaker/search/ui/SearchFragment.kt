@@ -15,7 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ilyashvetsov.playlistmaker.databinding.FragmentSearchBinding
 import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerActivity
-import com.github.ilyashvetsov.playlistmaker.search.domain.model.Track
+import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
+import com.github.ilyashvetsov.playlistmaker.track.presentation.AdapterTrack
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

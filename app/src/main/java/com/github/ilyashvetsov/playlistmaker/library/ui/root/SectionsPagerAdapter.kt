@@ -3,7 +3,7 @@ package com.github.ilyashvetsov.playlistmaker.library.ui.root
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.github.ilyashvetsov.playlistmaker.library.ui.FavoriteTracksFragment
+import com.github.ilyashvetsov.playlistmaker.library.ui.favorite.FavoriteTracksFragment
 import com.github.ilyashvetsov.playlistmaker.library.ui.PlaylistsFragment
 
 class SectionsPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {

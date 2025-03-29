@@ -1,10 +1,10 @@
-package com.github.ilyashvetsov.playlistmaker.search.ui
+package com.github.ilyashvetsov.playlistmaker.track.presentation
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.github.ilyashvetsov.playlistmaker.R
 import com.github.ilyashvetsov.playlistmaker.databinding.TrackItemBinding
-import com.github.ilyashvetsov.playlistmaker.search.domain.model.Track
+import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 

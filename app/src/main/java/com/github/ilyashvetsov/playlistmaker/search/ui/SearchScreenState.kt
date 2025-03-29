@@ -1,6 +1,6 @@
 package com.github.ilyashvetsov.playlistmaker.search.ui
 
-import com.github.ilyashvetsov.playlistmaker.search.domain.model.Track
+import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
 
 sealed class SearchScreenState {
     object Init : SearchScreenState()
