@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_library"
-        android:name="com.github.ilyashvetsov.playlistmaker.library.ui.root.LibraryFragment"
+        android:name="com.github.ilyashvetsov.playlistmaker.library.root.ui.LibraryFragment"
         android:label="@string/library"
         tools:layout="@layout/fragment_library" />
 

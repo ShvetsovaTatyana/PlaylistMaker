@@ -1,7 +1,7 @@
 package com.github.ilyashvetsov.playlistmaker
 
 import android.app.Application
-import com.github.ilyashvetsov.playlistmaker.library.di.libraryModule
+import com.github.ilyashvetsov.playlistmaker.library.root.di.libraryModule
 import com.github.ilyashvetsov.playlistmaker.player.di.playerModule
 import com.github.ilyashvetsov.playlistmaker.search.di.searchModule
 import com.github.ilyashvetsov.playlistmaker.settings.di.settingsModule

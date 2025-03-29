@@ -1,4 +1,4 @@
-package com.github.ilyashvetsov.playlistmaker.library.ui.root
+package com.github.ilyashvetsov.playlistmaker.library.root.ui
 
 import androidx.fragment.app.Fragment
 

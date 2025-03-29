@@ -1,4 +1,4 @@
-package com.github.ilyashvetsov.playlistmaker.library.ui
+package com.github.ilyashvetsov.playlistmaker.library.playlists.ui
 
 import androidx.lifecycle.ViewModel
 

@@ -1,12 +1,12 @@
-package com.github.ilyashvetsov.playlistmaker.library.data
+package com.github.ilyashvetsov.playlistmaker.library.favorite.data
 
-import com.github.ilyashvetsov.playlistmaker.library.data.db.AppDatabase
-import com.github.ilyashvetsov.playlistmaker.library.data.db.LibraryDao
-import com.github.ilyashvetsov.playlistmaker.library.domain.LibraryRepository
+import com.github.ilyashvetsov.playlistmaker.library.root.data.db.AppDatabase
+import com.github.ilyashvetsov.playlistmaker.library.favorite.data.db.FavoriteDao
+import com.github.ilyashvetsov.playlistmaker.library.favorite.domain.FavoriteRepository
 import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
 
-class LibraryRepositoryImpl(appDatabase: AppDatabase): LibraryRepository {
-    private val dao: LibraryDao = appDatabase.getLibraryDao()
+class FavoriteRepositoryImpl(appDatabase: AppDatabase): FavoriteRepository {
+    private val dao: FavoriteDao = appDatabase.getLibraryDao()
 
     override fun addTrack(track: Track) {
         dao.insertTrack(trackEntity = track.toEntity())

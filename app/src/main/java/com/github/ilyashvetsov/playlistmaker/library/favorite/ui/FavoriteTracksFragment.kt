@@ -1,4 +1,4 @@
-package com.github.ilyashvetsov.playlistmaker.library.ui.favorite
+package com.github.ilyashvetsov.playlistmaker.library.favorite.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ilyashvetsov.playlistmaker.R
 import com.github.ilyashvetsov.playlistmaker.databinding.FragmentFavoriteTracksBinding
-import com.github.ilyashvetsov.playlistmaker.library.ui.root.BaseSectionFragment
+import com.github.ilyashvetsov.playlistmaker.library.root.ui.BaseSectionFragment
 import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerActivity
 import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
 import com.github.ilyashvetsov.playlistmaker.track.presentation.AdapterTrack

@@ -1,4 +1,4 @@
-package com.github.ilyashvetsov.playlistmaker.library.data.db
+package com.github.ilyashvetsov.playlistmaker.library.root.data.db
 
 import androidx.room.TypeConverter
 import java.util.Date

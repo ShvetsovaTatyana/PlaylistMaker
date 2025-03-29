@@ -1,4 +1,4 @@
-package com.github.ilyashvetsov.playlistmaker.library.ui.root
+package com.github.ilyashvetsov.playlistmaker.library.root.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater

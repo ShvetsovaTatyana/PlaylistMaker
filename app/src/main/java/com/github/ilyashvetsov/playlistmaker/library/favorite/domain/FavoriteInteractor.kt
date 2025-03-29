@@ -1,17 +1,17 @@
-package com.github.ilyashvetsov.playlistmaker.library.domain
+package com.github.ilyashvetsov.playlistmaker.library.favorite.domain
 
 import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
 
-interface LibraryInteractor {
+interface FavoriteInteractor {
     fun addTrack(track: Track)
     fun removeTrack(track: Track)
     fun getTracks(): List<Track>
     fun isFavorite(track: Track): Boolean
 }
 
-class LibraryInteractorImpl(
-    private val repository: LibraryRepository
-): LibraryInteractor {
+class FavoriteInteractorImpl(
+    private val repository: FavoriteRepository
+): FavoriteInteractor {
     override fun addTrack(track: Track) {
         repository.addTrack(track)
     }

@@ -1,13 +1,13 @@
-package com.github.ilyashvetsov.playlistmaker.library.data.db
+package com.github.ilyashvetsov.playlistmaker.library.favorite.data.db
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.github.ilyashvetsov.playlistmaker.library.data.db.entity.TrackEntity
+import com.github.ilyashvetsov.playlistmaker.library.favorite.data.db.entity.TrackEntity
 
 @Dao
-interface LibraryDao {
+interface FavoriteDao {
 
     @Insert(entity = TrackEntity::class)
     fun insertTrack(trackEntity: TrackEntity)

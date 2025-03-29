@@ -1,18 +1,18 @@
-package com.github.ilyashvetsov.playlistmaker.library.ui.favorite
+package com.github.ilyashvetsov.playlistmaker.library.favorite.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.ilyashvetsov.playlistmaker.library.domain.LibraryInteractor
+import com.github.ilyashvetsov.playlistmaker.library.favorite.domain.FavoriteInteractor
 
 class FavoriteTracksViewModel(
-    private val libraryInteractor: LibraryInteractor,
+    private val favoriteInteractor: FavoriteInteractor,
 ) : ViewModel() {
     private val _screenState: MutableLiveData<FavoriteScreenState> = MutableLiveData(FavoriteScreenState.Loading)
     val screenState: LiveData<FavoriteScreenState> = _screenState
 
     fun updateData() {
-        val trackList = libraryInteractor.getTracks()
+        val trackList = favoriteInteractor.getTracks()
         _screenState.value = if (trackList.isEmpty()) {
             FavoriteScreenState.Empty
         } else {

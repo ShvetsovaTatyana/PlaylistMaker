@@ -1,4 +1,4 @@
-package com.github.ilyashvetsov.playlistmaker.library.ui.favorite
+package com.github.ilyashvetsov.playlistmaker.library.favorite.ui
 
 import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
 

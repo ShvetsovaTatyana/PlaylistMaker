@@ -1,6 +1,6 @@
-package com.github.ilyashvetsov.playlistmaker.library.data
+package com.github.ilyashvetsov.playlistmaker.library.favorite.data
 
-import com.github.ilyashvetsov.playlistmaker.library.data.db.entity.TrackEntity
+import com.github.ilyashvetsov.playlistmaker.library.favorite.data.db.entity.TrackEntity
 import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
 
 fun Track.toEntity(): TrackEntity =

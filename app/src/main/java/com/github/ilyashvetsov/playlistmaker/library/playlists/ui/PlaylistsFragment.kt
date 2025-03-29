@@ -1,4 +1,4 @@
-package com.github.ilyashvetsov.playlistmaker.library.ui
+package com.github.ilyashvetsov.playlistmaker.library.playlists.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.github.ilyashvetsov.playlistmaker.R
 import com.github.ilyashvetsov.playlistmaker.databinding.FragmentPlaylistsBinding
-import com.github.ilyashvetsov.playlistmaker.library.ui.root.BaseSectionFragment
+import com.github.ilyashvetsov.playlistmaker.library.root.ui.BaseSectionFragment
 
 class PlaylistsFragment : BaseSectionFragment() {
     private lateinit var viewModel: PlaylistsViewModel

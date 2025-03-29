@@ -3,7 +3,7 @@ package com.github.ilyashvetsov.playlistmaker.player.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.ilyashvetsov.playlistmaker.library.domain.LibraryInteractor
+import com.github.ilyashvetsov.playlistmaker.library.favorite.domain.FavoriteInteractor
 import com.github.ilyashvetsov.playlistmaker.player.domain.AudioPlayerInteractor
 import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
 import java.text.SimpleDateFormat
@@ -11,7 +11,7 @@ import java.util.Locale
 
 class AudioPlayerViewModel(
     private val audioPlayerInteractor: AudioPlayerInteractor,
-    private val libraryInteractor: LibraryInteractor,
+    private val favoriteInteractor: FavoriteInteractor,
 ) : ViewModel() {
     private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
 
@@ -25,7 +25,7 @@ class AudioPlayerViewModel(
     val timeSing: LiveData<String> = _timeSing
 
     fun init(track: Track) {
-        _isFavoriteState.value = libraryInteractor.isFavorite(track)
+        _isFavoriteState.value = favoriteInteractor.isFavorite(track)
     }
 
     fun preparePlayer(url: String) {
@@ -71,12 +71,12 @@ class AudioPlayerViewModel(
     }
 
     fun addTrackToFavorite(track: Track) {
-        if (libraryInteractor.isFavorite(track)) {
-            libraryInteractor.removeTrack(track)
+        if (favoriteInteractor.isFavorite(track)) {
+            favoriteInteractor.removeTrack(track)
         } else {
-            libraryInteractor.addTrack(track)
+            favoriteInteractor.addTrack(track)
         }
-        _isFavoriteState.value = libraryInteractor.isFavorite(track)
+        _isFavoriteState.value = favoriteInteractor.isFavorite(track)
     }
 
     companion object {
