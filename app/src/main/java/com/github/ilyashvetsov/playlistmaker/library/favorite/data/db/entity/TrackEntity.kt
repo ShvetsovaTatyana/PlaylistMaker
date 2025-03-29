@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
 
-@Entity(tableName = "library_table")
+@Entity(tableName = "favorite_table")
 data class TrackEntity(
     @PrimaryKey
     val trackId: Int,

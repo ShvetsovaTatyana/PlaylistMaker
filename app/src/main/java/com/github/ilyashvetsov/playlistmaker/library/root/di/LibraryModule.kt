@@ -7,6 +7,10 @@ import com.github.ilyashvetsov.playlistmaker.library.favorite.domain.FavoriteInt
 import com.github.ilyashvetsov.playlistmaker.library.favorite.domain.FavoriteInteractorImpl
 import com.github.ilyashvetsov.playlistmaker.library.favorite.domain.FavoriteRepository
 import com.github.ilyashvetsov.playlistmaker.library.favorite.ui.FavoriteTracksViewModel
+import com.github.ilyashvetsov.playlistmaker.library.playlists.data.PlaylistsRepositoryImpl
+import com.github.ilyashvetsov.playlistmaker.library.playlists.domain.PlaylistsInteractor
+import com.github.ilyashvetsov.playlistmaker.library.playlists.domain.PlaylistsInteractorImpl
+import com.github.ilyashvetsov.playlistmaker.library.playlists.domain.PlaylistsRepository
 import com.github.ilyashvetsov.playlistmaker.library.playlists.ui.PlaylistsViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModelOf
@@ -24,6 +28,9 @@ val libraryModule = module {
 
     singleOf(::FavoriteRepositoryImpl) { bind<FavoriteRepository>() }
     factoryOf(::FavoriteInteractorImpl) { bind<FavoriteInteractor>() }
+
+    singleOf(::PlaylistsRepositoryImpl) { bind<PlaylistsRepository>() }
+    factoryOf(::PlaylistsInteractorImpl) { bind<PlaylistsInteractor>() }
 
     viewModelOf(::FavoriteTracksViewModel)
     viewModelOf(::PlaylistsViewModel)

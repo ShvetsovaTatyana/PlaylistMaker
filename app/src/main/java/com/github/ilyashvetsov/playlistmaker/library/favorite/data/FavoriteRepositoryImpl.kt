@@ -6,7 +6,7 @@ import com.github.ilyashvetsov.playlistmaker.library.favorite.domain.FavoriteRep
 import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
 
 class FavoriteRepositoryImpl(appDatabase: AppDatabase): FavoriteRepository {
-    private val dao: FavoriteDao = appDatabase.getLibraryDao()
+    private val dao: FavoriteDao = appDatabase.getFavoriteDao()
 
     override fun addTrack(track: Track) {
         dao.insertTrack(trackEntity = track.toEntity())
