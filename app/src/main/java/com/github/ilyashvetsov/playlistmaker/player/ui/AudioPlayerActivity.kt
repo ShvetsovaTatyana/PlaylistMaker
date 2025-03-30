@@ -12,7 +12,7 @@ import com.github.ilyashvetsov.playlistmaker.databinding.ActivityAudioPlayerBind
 import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerViewModel.Companion.STATE_PAUSED
 import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerViewModel.Companion.STATE_PLAYING
 import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerViewModel.Companion.STATE_PREPARED
-import com.github.ilyashvetsov.playlistmaker.search.domain.model.Track
+import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.time.ZoneId
@@ -28,6 +28,8 @@ class AudioPlayerActivity : AppCompatActivity() {
         setContentView(binding.root)
         val track = intent.getParcelableExtra<Track>(TRACK_KEY)
             ?: throw Exception("track is null")
+
+        viewModel.init(track)
 
         with(binding) {
             nameSing.text = track.trackName
@@ -54,8 +56,18 @@ class AudioPlayerActivity : AppCompatActivity() {
 
             buttonBackArrow.setOnClickListener { finish() }
             playButton.setOnClickListener { viewModel.playbackControl() }
+            likeButton.setOnClickListener { viewModel.addTrackToFavorite(track) }
 
             viewModel.timeSing.observe(this@AudioPlayerActivity) { timeSing.text = it }
+            viewModel.isFavoriteState.observe(this@AudioPlayerActivity) { isFavorite ->
+                likeButton.setImageResource(
+                    if (isFavorite == true) {
+                        R.drawable.favorite
+                    } else {
+                        R.drawable.like
+                    }
+                )
+            }
             viewModel.playerState.observe(this@AudioPlayerActivity) { state ->
                 when (state) {
                     STATE_PREPARED -> {

@@ -2,7 +2,7 @@ package com.github.ilyashvetsov.playlistmaker.search.data.repository
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import com.github.ilyashvetsov.playlistmaker.search.domain.model.Track
+import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
 import com.github.ilyashvetsov.playlistmaker.search.domain.repository.SearchHistoryRepository
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

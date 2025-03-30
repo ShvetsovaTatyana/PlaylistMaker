@@ -1,6 +1,6 @@
 package com.github.ilyashvetsov.playlistmaker.search.domain.repository
 
-import com.github.ilyashvetsov.playlistmaker.search.domain.model.Track
+import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
 
 interface SearchHistoryRepository {
     fun saveTrack(track: Track)

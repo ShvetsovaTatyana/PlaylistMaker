@@ -1,10 +1,10 @@
-package com.github.ilyashvetsov.playlistmaker.search.ui
+package com.github.ilyashvetsov.playlistmaker.track.presentation
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ilyashvetsov.playlistmaker.databinding.TrackItemBinding
-import com.github.ilyashvetsov.playlistmaker.search.domain.model.Track
+import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
 
 class AdapterTrack(
     private val onItemClickListener: (track: Track) -> Unit

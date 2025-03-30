@@ -5,12 +5,12 @@ import com.github.ilyashvetsov.playlistmaker.search.data.network.ItunesApiServic
 import com.github.ilyashvetsov.playlistmaker.search.data.network.NetworkClient
 import com.github.ilyashvetsov.playlistmaker.search.data.network.RetrofitNetworkClient
 import com.github.ilyashvetsov.playlistmaker.search.data.repository.SearchHistoryRepositoryImpl
-import com.github.ilyashvetsov.playlistmaker.search.data.repository.TrackRepositoryImpl
+import com.github.ilyashvetsov.playlistmaker.search.data.repository.SearchTrackRepositoryImpl
 import com.github.ilyashvetsov.playlistmaker.search.domain.SearchHistoryInteractor
 import com.github.ilyashvetsov.playlistmaker.search.domain.SearchHistoryInteractorImpl
 import com.github.ilyashvetsov.playlistmaker.search.domain.SearchTracksUseCase
 import com.github.ilyashvetsov.playlistmaker.search.domain.repository.SearchHistoryRepository
-import com.github.ilyashvetsov.playlistmaker.search.domain.repository.TrackRepository
+import com.github.ilyashvetsov.playlistmaker.search.domain.repository.SearchTrackRepository
 import com.github.ilyashvetsov.playlistmaker.search.ui.SearchViewModel
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
@@ -40,7 +40,7 @@ val searchModule = module {
     factory { Gson() }
 
     singleOf(::SearchHistoryRepositoryImpl) { bind<SearchHistoryRepository>() }
-    singleOf(::TrackRepositoryImpl) { bind<TrackRepository>() }
+    singleOf(::SearchTrackRepositoryImpl) { bind<SearchTrackRepository>() }
 
     factoryOf(::SearchHistoryInteractorImpl) { bind<SearchHistoryInteractor>() }
     factoryOf(::SearchTracksUseCase)
