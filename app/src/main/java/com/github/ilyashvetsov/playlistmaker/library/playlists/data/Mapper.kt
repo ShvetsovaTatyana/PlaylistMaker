@@ -10,7 +10,7 @@ fun Playlist.toEntity(): PlaylistEntity =
         id = id,
         name = name,
         description = description,
-        imageUri = imageUri,
+        imagePath = imagePath,
         trackIdsJson = Gson().toJson(trackIds),
         tracksCount = trackIds.size
     )
@@ -20,6 +20,6 @@ fun PlaylistEntity.toDomain(): Playlist =
         id = id,
         name = name,
         description = description,
-        imageUri = imageUri,
+        imagePath = imagePath,
         trackIds = Gson().fromJson(trackIdsJson, object : TypeToken<List<Int>>() {}.type)
     )

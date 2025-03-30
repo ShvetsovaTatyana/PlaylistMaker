@@ -1,4 +1,4 @@
-package com.github.ilyashvetsov.playlistmaker.search.ui
+package com.github.ilyashvetsov.playlistmaker.util
 
 import android.text.Editable
 import android.text.TextWatcher

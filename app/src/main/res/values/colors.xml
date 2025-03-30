@@ -18,4 +18,12 @@
     <color name="image_button_play">#000000</color>
     <color name="image_button_cirkle">#401A1B22</color>
     <color name="song_characteristics">#AEAFB4</color>
+
+    <color name="tx_color">#1A1B22</color>
+    <color name="for_icons">#AEAFB4</color>
+    <color name="for_cursor">#3772E7</color>
+
+    <color name="for_textEditBack">#E6E8EB</color>
+    <color name="for_textEditHint">#AEAFB4</color>
+
 </resources>
