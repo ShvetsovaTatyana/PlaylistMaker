@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.navigation_create_playlist -> {
+                R.id.navigation_create_playlist, R.id.navigation_audio_player -> {
                     binding.navView.visibility = View.GONE
                 }
 

@@ -1,19 +1,20 @@
 package com.github.ilyashvetsov.playlistmaker.library.favorite.ui
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.ilyashvetsov.playlistmaker.R
 import com.github.ilyashvetsov.playlistmaker.databinding.FragmentFavoriteTracksBinding
 import com.github.ilyashvetsov.playlistmaker.library.root.ui.BaseSectionFragment
-import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerActivity
+import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerFragment
 import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
 import com.github.ilyashvetsov.playlistmaker.track.presentation.AdapterTrack
 import kotlinx.coroutines.delay
@@ -75,8 +76,8 @@ class FavoriteTracksFragment : BaseSectionFragment() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         viewModel.updateData()
     }
 
@@ -99,9 +100,10 @@ class FavoriteTracksFragment : BaseSectionFragment() {
     }
 
     private fun openAudioPlayer(track: Track) {
-        val intent = Intent(context, AudioPlayerActivity::class.java)
-        intent.putExtra(AudioPlayerActivity.TRACK_KEY, track)
-        startActivity(intent)
+        findNavController().navigate(
+            resId = R.id.action_navigation_library_to_navigation_audio_player,
+            args = bundleOf(AudioPlayerFragment.TRACK_KEY to track)
+        )
     }
 
     companion object {

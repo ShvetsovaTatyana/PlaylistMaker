@@ -2,13 +2,16 @@ package com.github.ilyashvetsov.playlistmaker.player.ui
 
 import android.content.res.Resources.getSystem
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.github.ilyashvetsov.playlistmaker.R
-import com.github.ilyashvetsov.playlistmaker.databinding.ActivityAudioPlayerBinding
+import com.github.ilyashvetsov.playlistmaker.databinding.FragmentAudioPlayerBinding
 import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerViewModel.Companion.STATE_PAUSED
 import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerViewModel.Companion.STATE_PLAYING
 import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerViewModel.Companion.STATE_PREPARED
@@ -18,15 +21,22 @@ import java.text.SimpleDateFormat
 import java.time.ZoneId
 import java.util.Locale
 
-class AudioPlayerActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityAudioPlayerBinding
+class AudioPlayerFragment : Fragment() {
+    private lateinit var binding: FragmentAudioPlayerBinding
     private val viewModel by viewModel<AudioPlayerViewModel>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        val track = intent.getParcelableExtra<Track>(TRACK_KEY)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentAudioPlayerBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val track = requireArguments().getParcelable<Track>(TRACK_KEY)
             ?: throw Exception("track is null")
 
         viewModel.init(track)
@@ -54,12 +64,14 @@ class AudioPlayerActivity : AppCompatActivity() {
                 .transform(CenterCrop(), RoundedCorners(8.px))
                 .into(placeHolderEmptyImage)
 
-            buttonBackArrow.setOnClickListener { finish() }
+            buttonBackArrow.setOnClickListener {
+                findNavController().navigateUp()
+            }
             playButton.setOnClickListener { viewModel.playbackControl() }
             likeButton.setOnClickListener { viewModel.addTrackToFavorite(track) }
 
-            viewModel.timeSing.observe(this@AudioPlayerActivity) { timeSing.text = it }
-            viewModel.isFavoriteState.observe(this@AudioPlayerActivity) { isFavorite ->
+            viewModel.timeSing.observe(viewLifecycleOwner) { timeSing.text = it }
+            viewModel.isFavoriteState.observe(viewLifecycleOwner) { isFavorite ->
                 likeButton.setImageResource(
                     if (isFavorite == true) {
                         R.drawable.favorite
@@ -68,7 +80,7 @@ class AudioPlayerActivity : AppCompatActivity() {
                     }
                 )
             }
-            viewModel.playerState.observe(this@AudioPlayerActivity) { state ->
+            viewModel.playerState.observe(viewLifecycleOwner) { state ->
                 when (state) {
                     STATE_PREPARED -> {
                         playButton.isEnabled = true
