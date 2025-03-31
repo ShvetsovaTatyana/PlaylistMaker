@@ -77,19 +77,6 @@ class PlaylistsFragment : BaseSectionFragment() {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onStop() {
-        super.onStop()
-    }
-
-    override fun onStart() {
-        super.onStart()
-//        viewModel.updateData()
-    }
-
     override fun onResume() {
         super.onResume()
         viewModel.updateData()
