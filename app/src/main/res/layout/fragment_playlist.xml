@@ -127,13 +127,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <View
-        android:id="@+id/overlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#99000000"
-        android:visibility="gone" />
-
     <LinearLayout
         android:id="@+id/bs"
         android:background="@drawable/shape_bottom_view"
@@ -179,12 +172,47 @@
             app:srcCompat="@drawable/placeholder_empty"
             android:visibility="gone" />
 
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/rv2"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="12dp"-->
-<!--            android:layout_marginStart="0dp" />-->
+    </LinearLayout>
+
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/menu"
+        android:background="@drawable/shape_bottom_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="300dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <View
+            android:layout_width="50dp"
+            android:layout_height="4dp"
+            android:background="@drawable/corner_rad44"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/share_button"
+            style="@style/settingsActivityTextView"
+            android:layout_marginTop="8dp"
+            android:text="@string/share_playlist" />
+
+        <TextView
+            android:id="@+id/edit_button"
+            style="@style/settingsActivityTextView"
+            android:text="@string/edit_playlist" />
+
+        <TextView
+            android:id="@+id/remove_button"
+            style="@style/settingsActivityTextView"
+            android:text="@string/remove_playlist" />
 
     </LinearLayout>
 

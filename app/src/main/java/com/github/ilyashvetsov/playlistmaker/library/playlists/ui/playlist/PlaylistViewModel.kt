@@ -44,5 +44,7 @@ class PlaylistViewModel(
         }
     }
 
+    fun removePlaylist() = playlistState.value?.let(interactor::removePlaylist)
+
     fun share() = playlistState.value?.let(interactor::share)
 }

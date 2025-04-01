@@ -10,6 +10,7 @@ interface PlaylistsInteractor {
     fun addPlaylist(playlist: Playlist)
     fun addTrackToPlaylist(track: Track, playlist: Playlist)
     fun removeTrackFromPlaylist(track: Track, playlist: Playlist)
+    fun removePlaylist(playlist: Playlist)
     fun getPlaylists(): List<Playlist>
     fun getTracks(playlist: Playlist): List<Track>
     fun getAllTime(playlist: Playlist): Int
@@ -30,6 +31,10 @@ class PlaylistsInteractorImpl(
 
     override fun removeTrackFromPlaylist(track: Track, playlist: Playlist) {
         repository.removeTrackFromPlaylist(track, playlist)
+    }
+
+    override fun removePlaylist(playlist: Playlist) {
+        repository.removePlaylist(playlist)
     }
 
     override fun getPlaylists(): List<Playlist> {

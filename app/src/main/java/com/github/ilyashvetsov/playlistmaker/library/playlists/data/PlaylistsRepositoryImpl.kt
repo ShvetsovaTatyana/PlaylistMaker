@@ -34,6 +34,10 @@ class PlaylistsRepositoryImpl(appDatabase: AppDatabase) : PlaylistsRepository {
         )
     }
 
+    override fun removePlaylist(playlist: Playlist) {
+        playlistsDao.deletePlaylist(playlistEntity = playlist.toEntity())
+    }
+
     override fun getPlaylists(): List<Playlist> {
         return playlistsDao.getPlaylists().map { playlistEntity -> playlistEntity.toDomain() }
     }

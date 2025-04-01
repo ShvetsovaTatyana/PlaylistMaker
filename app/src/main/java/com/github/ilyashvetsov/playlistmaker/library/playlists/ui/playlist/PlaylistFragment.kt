@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -23,6 +24,7 @@ import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerFragment
 import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
 import com.github.ilyashvetsov.playlistmaker.track.presentation.AdapterTrack
 import com.github.ilyashvetsov.playlistmaker.util.px
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -32,6 +34,8 @@ import java.io.File
 class PlaylistFragment : Fragment() {
     private lateinit var binding: FragmentPlaylistBinding
     private val viewModel by viewModel<PlaylistViewModel>()
+
+    private lateinit var menuBehavior: BottomSheetBehavior<LinearLayout>
 
     private var isTrackClickAllowed = true
     private val adapter: AdapterTrack by lazy {
@@ -67,13 +71,31 @@ class PlaylistFragment : Fragment() {
                 findNavController().navigateUp()
             }
 
-            ivShare.setOnClickListener {
-                share()
-            }
-
+            ivShare.setOnClickListener { share() }
             ivMore.setOnClickListener {
-
+                menuBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             }
+
+            shareButton.setOnClickListener { share() }
+            editButton.setOnClickListener { edit() }
+            removeButton.setOnClickListener { removePlaylist() }
+
+            menuBehavior = BottomSheetBehavior.from(menu).apply {
+                state = BottomSheetBehavior.STATE_HIDDEN
+            }
+
+            menuBehavior.addBottomSheetCallback(
+                object : BottomSheetBehavior.BottomSheetCallback() {
+                    override fun onStateChanged(bottomSheet: View, newState: Int) {
+                        overlay.visibility = when (newState) {
+                            BottomSheetBehavior.STATE_HIDDEN -> View.GONE
+                            else -> View.VISIBLE
+                        }
+                    }
+
+                    override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+                }
+            )
 
             recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             recyclerView.adapter = adapter
@@ -167,6 +189,23 @@ class PlaylistFragment : Fragment() {
             } else {
                 viewModel.share()
             }
+        }
+    }
+
+    private fun edit() {
+
+    }
+
+    private fun removePlaylist() {
+        viewModel.playlistState.value?.let { playlist ->
+            MaterialAlertDialogBuilder(requireContext())
+                .setMessage("Хотите удалить плейлист ${playlist.name}?")
+                .setPositiveButton("Да") { _, _ ->
+                    viewModel.removePlaylist()
+                    findNavController().navigateUp()
+                }
+                .setNegativeButton("Нет") { _, _ -> }
+                .show()
         }
     }
 

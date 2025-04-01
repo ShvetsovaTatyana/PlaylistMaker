@@ -21,4 +21,8 @@
     <string name="empty_playlist">В плейлисте пока нет ни одного трека</string>
     <string name="new_playlist">Новый плейлист</string>
     <string name="add_to_playlist">Добавить в плейлист</string>
+
+    <string name="share_playlist">Поделиться</string>
+    <string name="edit_playlist">Редактировать информацию</string>
+    <string name="remove_playlist">Удалить плейлист</string>
 </resources>
