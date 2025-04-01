@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -64,6 +65,14 @@ class PlaylistFragment : Fragment() {
         with(binding) {
             buttonBackArrow.setOnClickListener {
                 findNavController().navigateUp()
+            }
+
+            ivShare.setOnClickListener {
+                share()
+            }
+
+            ivMore.setOnClickListener {
+
             }
 
             recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -145,6 +154,20 @@ class PlaylistFragment : Fragment() {
             }
             .setNegativeButton("Нет") { _, _ -> }
             .show()
+    }
+
+    private fun share() {
+        viewModel.playlistState.value?.let { playlist ->
+            if (playlist.trackIds.isEmpty()) {
+                Toast.makeText(
+                    requireContext(),
+                    "В этом плейлисте нет списка треков, которым можно поделиться",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                viewModel.share()
+            }
+        }
     }
 
     companion object {

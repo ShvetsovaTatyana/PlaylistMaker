@@ -43,4 +43,6 @@ class PlaylistViewModel(
             update(playlist = playlist.copy(trackIds = mutableList))
         }
     }
+
+    fun share() = playlistState.value?.let(interactor::share)
 }

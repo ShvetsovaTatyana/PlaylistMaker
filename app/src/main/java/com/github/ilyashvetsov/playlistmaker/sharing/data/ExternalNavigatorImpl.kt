@@ -10,11 +10,11 @@ import com.github.ilyashvetsov.playlistmaker.sharing.domain.model.EmailData
 class ExternalNavigatorImpl(
     private val context: Context
 ) : ExternalNavigator {
-    override fun shareLink(link: String) {
+    override fun share(text: String) {
         val intent = Intent().apply {
             action = Intent.ACTION_SEND
             type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, link)
+            putExtra(Intent.EXTRA_TEXT, text)
         }
         val chooserIntent = Intent.createChooser(intent, "")
         chooserIntent.setFlags(FLAG_ACTIVITY_NEW_TASK)
