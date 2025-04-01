@@ -44,7 +44,7 @@
             android:fontFamily="@font/ys_display_regular"
             android:maxLines="1"
             android:singleLine="true"
-            android:textColor="@color/search_title"
+            android:textColor="@color/text_color"
             android:textSize="16sp"
             tools:text="Summer Party" />
 

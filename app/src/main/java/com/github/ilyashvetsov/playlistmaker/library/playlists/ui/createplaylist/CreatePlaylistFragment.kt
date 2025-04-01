@@ -16,8 +16,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.github.ilyashvetsov.playlistmaker.R
 import com.github.ilyashvetsov.playlistmaker.databinding.FragmentCreatePlaylistBinding
 import com.github.ilyashvetsov.playlistmaker.util.MyTextWatcher
+import com.github.ilyashvetsov.playlistmaker.util.px
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
@@ -83,9 +88,12 @@ class CreatePlaylistFragment : Fragment() {
 
             viewModel.screenState.observe(viewLifecycleOwner) { state ->
                 createButton.isEnabled = state.isButtonEnabled
-                state.imagePath?.let {
-                    val image = File(it)
-                    playlistImage.setImageURI(image.toUri())
+                state.imagePath?.let { path ->
+                    Glide.with(this@CreatePlaylistFragment)
+                        .load(File(path).toUri())
+                        .placeholder(R.drawable.ic_add_photo)
+                        .transform(CenterCrop(), RoundedCorners(8.px))
+                        .into(playlistImage)
                 }
             }
         }

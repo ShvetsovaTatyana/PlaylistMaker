@@ -22,7 +22,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/arrow_back"
-            app:tint="@color/title_settings" />
+            app:tint="@color/arrow" />
 
         <ImageView
             android:id="@+id/place_holder_empty_image"
@@ -48,7 +48,7 @@
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="12dp"
             android:fontFamily="@font/ys_display_medium"
-            android:textColor="@color/title_settings"
+            android:textColor="@color/text_color"
             android:textSize="22sp"
             app:layout_constraintBottom_toTopOf="@id/name_singer"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,7 +62,7 @@
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="30dp"
             android:fontFamily="@font/ys_display_medium"
-            android:textColor="@color/title_settings"
+            android:textColor="@color/text_color"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@id/play_button"
             app:layout_constraintStart_toStartOf="parent"
@@ -108,7 +108,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="39dp"
             android:fontFamily="@font/ys_display_medium"
-            android:textColor="@color/title_settings"
+            android:textColor="@color/text_color"
             android:textSize="14sp"
             android:text="00:30"
             app:layout_constraintBottom_toTopOf="@id/duration"
@@ -190,7 +190,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="17dp"
             android:fontFamily="@font/ys_display_regular"
-            android:textColor="@color/title_settings"
+            android:textColor="@color/text_color"
             android:textSize="13sp"
             app:layout_constraintBottom_toTopOf="@id/album_sing"
             app:layout_constraintEnd_toEndOf="parent"
@@ -203,7 +203,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="17dp"
             android:fontFamily="@font/ys_display_regular"
-            android:textColor="@color/title_settings"
+            android:textColor="@color/text_color"
             android:textSize="13sp"
             android:gravity="right"
             app:layout_constraintBottom_toTopOf="@id/year_sing"
@@ -218,7 +218,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="17dp"
             android:fontFamily="@font/ys_display_regular"
-            android:textColor="@color/title_settings"
+            android:textColor="@color/text_color"
             android:textSize="13sp"
             app:layout_constraintBottom_toTopOf="@id/genre_sing"
             app:layout_constraintEnd_toEndOf="parent"
@@ -231,7 +231,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="17dp"
             android:fontFamily="@font/ys_display_regular"
-            android:textColor="@color/title_settings"
+            android:textColor="@color/text_color"
             android:textSize="13sp"
             app:layout_constraintBottom_toTopOf="@id/country_sing"
             app:layout_constraintEnd_toEndOf="parent"
@@ -245,7 +245,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="28dp"
             android:fontFamily="@font/ys_display_regular"
-            android:textColor="@color/title_settings"
+            android:textColor="@color/text_color"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -253,13 +253,20 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
     <LinearLayout
         android:id="@+id/bottom_sheet"
         android:background="@drawable/shape_bottom_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingHorizontal="16dp"
         app:behavior_hideable="true"
         app:behavior_peekHeight="505dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
@@ -277,8 +284,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/ys_text_regular"
-            android:text="@string/new_playlist"
-            android:textColor="?attr/colorSecondary"
+            android:text="@string/add_to_playlist"
+            android:textColor="@color/text_color"
             android:textFontWeight="500"
             android:textSize="19sp" />
 
@@ -287,15 +294,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:backgroundTint="?attr/colorSecondary"
+            android:layout_marginTop="28dp"
+            android:backgroundTint="@color/text_color"
             android:fontFamily="@font/ys_display_medium"
             android:text="@string/new_playlist"
             android:textAllCaps="false"
-            android:textColor="?attr/colorOnSecondary"
-            android:textFontWeight="500"
+            android:textColor="@color/screen_background"
             android:textSize="14sp"
-            app:cornerRadius="54dp"
-            android:layout_marginTop="28dp"/>
+            app:cornerRadius="54dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"

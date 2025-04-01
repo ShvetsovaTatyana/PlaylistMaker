@@ -1,7 +1,6 @@
 package com.github.ilyashvetsov.playlistmaker.player.ui
 
 import android.annotation.SuppressLint
-import android.content.res.Resources.getSystem
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +22,7 @@ import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerViewModel.Comp
 import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerViewModel.Companion.STATE_PLAYING
 import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerViewModel.Companion.STATE_PREPARED
 import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
+import com.github.ilyashvetsov.playlistmaker.util.px
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -106,8 +106,23 @@ class AudioPlayerFragment : Fragment() {
             playButton.setOnClickListener { viewModel.playbackControl() }
             likeButton.setOnClickListener { viewModel.addTrackToFavorite(track) }
 
-            bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet).apply {
+                state = BottomSheetBehavior.STATE_HIDDEN
+            }
+
+            bottomSheetBehavior.addBottomSheetCallback(
+                object : BottomSheetBehavior.BottomSheetCallback() {
+                    override fun onStateChanged(bottomSheet: View, newState: Int) {
+                        overlay.visibility = when (newState) {
+                            BottomSheetBehavior.STATE_HIDDEN -> View.GONE
+                            else -> View.VISIBLE
+                        }
+                    }
+
+                    override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+                }
+            )
+
             recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             recyclerView.adapter = adapter
 
@@ -185,8 +200,5 @@ class AudioPlayerFragment : Fragment() {
     companion object {
         const val TRACK_KEY = "track_key"
         private const val CLICK_DEBOUNCE_DELAY = 1000L
-
-        // TODO use TypedValue.applyDimension
-        private val Int.px: Int get() = (this * getSystem().displayMetrics.density).toInt()
     }
 }
