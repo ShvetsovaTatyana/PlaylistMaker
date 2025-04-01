@@ -31,6 +31,10 @@
             android:id="@+id/action_navigation_library_to_navigation_audio_player"
             app:destination="@id/navigation_audio_player" />
 
+        <action
+            android:id="@+id/action_navigation_library_to_navigation_playlist"
+            app:destination="@id/navigation_playlist" />
+
     </fragment>
 
     <fragment
@@ -60,5 +64,16 @@
         android:name="com.github.ilyashvetsov.playlistmaker.library.playlists.ui.createplaylist.CreatePlaylistFragment"
         android:label="@string/new_playlist"
         tools:layout="@layout/fragment_create_playlist" />
+
+    <fragment
+        android:id="@+id/navigation_playlist"
+        android:name="com.github.ilyashvetsov.playlistmaker.library.playlists.ui.playlist.PlaylistFragment"
+        tools:layout="@layout/fragment_playlist" >
+
+        <action
+            android:id="@+id/action_navigation_playlist_to_navigation_audio_player"
+            app:destination="@id/navigation_audio_player" />
+
+    </fragment>
 
 </navigation>

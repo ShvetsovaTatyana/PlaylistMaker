@@ -13,6 +13,7 @@ import com.github.ilyashvetsov.playlistmaker.library.playlists.domain.PlaylistsI
 import com.github.ilyashvetsov.playlistmaker.library.playlists.domain.PlaylistsRepository
 import com.github.ilyashvetsov.playlistmaker.library.playlists.ui.allplaylists.PlaylistsViewModel
 import com.github.ilyashvetsov.playlistmaker.library.playlists.ui.createplaylist.CreatePlaylistViewModel
+import com.github.ilyashvetsov.playlistmaker.library.playlists.ui.playlist.PlaylistViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.bind
@@ -36,4 +37,5 @@ val libraryModule = module {
     viewModelOf(::FavoriteTracksViewModel)
     viewModelOf(::PlaylistsViewModel)
     viewModelOf(::CreatePlaylistViewModel)
+    viewModelOf(::PlaylistViewModel)
 }

@@ -1,10 +1,10 @@
 package com.github.ilyashvetsov.playlistmaker.library.favorite.data
 
-import com.github.ilyashvetsov.playlistmaker.library.favorite.data.db.entity.TrackEntity
+import com.github.ilyashvetsov.playlistmaker.library.favorite.data.db.entity.FavoriteTrackEntity
 import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
 
-fun Track.toEntity(): TrackEntity =
-    TrackEntity(
+fun Track.toFavoriteTrackEntity(): FavoriteTrackEntity =
+    FavoriteTrackEntity(
         trackId = trackId,
         trackName = trackName,
         artistName = artistName,
@@ -17,7 +17,7 @@ fun Track.toEntity(): TrackEntity =
         previewUrl = previewUrl
     )
 
-fun TrackEntity.toDomain(): Track =
+fun FavoriteTrackEntity.toDomain(): Track =
     Track(
         trackId = trackId,
         trackName = trackName,

@@ -7,6 +7,7 @@ import com.github.ilyashvetsov.playlistmaker.databinding.TrackItemBinding
 import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
 
 class AdapterTrack(
+    private val onItemLongClickListener: ((track: Track) -> Unit)? = null,
     private val onItemClickListener: (track: Track) -> Unit
 ) : RecyclerView.Adapter<TrackViewHolder>() {
     var trackList: List<Track> = emptyList()
@@ -14,7 +15,7 @@ class AdapterTrack(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val trackItemBinding = TrackItemBinding.inflate(layoutInflater, parent, false)
-        return TrackViewHolder(trackItemBinding, onItemClickListener)
+        return TrackViewHolder(trackItemBinding, onItemClickListener, onItemLongClickListener)
     }
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {

@@ -9,11 +9,11 @@ class FavoriteRepositoryImpl(appDatabase: AppDatabase): FavoriteRepository {
     private val dao: FavoriteDao = appDatabase.getFavoriteDao()
 
     override fun addTrack(track: Track) {
-        dao.insertTrack(trackEntity = track.toEntity())
+        dao.insertTrack(favoriteTrackEntity = track.toFavoriteTrackEntity())
     }
 
     override fun removeTrack(track: Track) {
-        dao.deleteTrack(trackEntity = track.toEntity())
+        dao.deleteTrack(favoriteTrackEntity = track.toFavoriteTrackEntity())
     }
 
     override fun getTracks(): List<Track> {
