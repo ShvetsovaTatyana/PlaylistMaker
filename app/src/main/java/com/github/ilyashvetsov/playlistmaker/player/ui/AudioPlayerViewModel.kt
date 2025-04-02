@@ -3,7 +3,9 @@ package com.github.ilyashvetsov.playlistmaker.player.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.ilyashvetsov.playlistmaker.library.domain.LibraryInteractor
+import com.github.ilyashvetsov.playlistmaker.library.favorite.domain.FavoriteInteractor
+import com.github.ilyashvetsov.playlistmaker.library.playlists.domain.PlaylistsInteractor
+import com.github.ilyashvetsov.playlistmaker.library.playlists.domain.model.Playlist
 import com.github.ilyashvetsov.playlistmaker.player.domain.AudioPlayerInteractor
 import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
 import java.text.SimpleDateFormat
@@ -11,9 +13,12 @@ import java.util.Locale
 
 class AudioPlayerViewModel(
     private val audioPlayerInteractor: AudioPlayerInteractor,
-    private val libraryInteractor: LibraryInteractor,
+    private val favoriteInteractor: FavoriteInteractor,
+    private val playlistsInteractor: PlaylistsInteractor,
 ) : ViewModel() {
     private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
+
+    private lateinit var track: Track
 
     private val _playerState = MutableLiveData(STATE_DEFAULT)
     val playerState: LiveData<Int> = _playerState
@@ -24,8 +29,12 @@ class AudioPlayerViewModel(
     private val _timeSing = MutableLiveData("00:00")
     val timeSing: LiveData<String> = _timeSing
 
+    private val _playlistsState: MutableLiveData<List<Playlist>> = MutableLiveData(emptyList())
+    val playlistsState: LiveData<List<Playlist>> = _playlistsState
+
     fun init(track: Track) {
-        _isFavoriteState.value = libraryInteractor.isFavorite(track)
+        this.track = track
+        _isFavoriteState.value = favoriteInteractor.isFavorite(track)
     }
 
     fun preparePlayer(url: String) {
@@ -71,12 +80,25 @@ class AudioPlayerViewModel(
     }
 
     fun addTrackToFavorite(track: Track) {
-        if (libraryInteractor.isFavorite(track)) {
-            libraryInteractor.removeTrack(track)
+        if (favoriteInteractor.isFavorite(track)) {
+            favoriteInteractor.removeTrack(track)
         } else {
-            libraryInteractor.addTrack(track)
+            favoriteInteractor.addTrack(track)
         }
-        _isFavoriteState.value = libraryInteractor.isFavorite(track)
+        _isFavoriteState.value = favoriteInteractor.isFavorite(track)
+    }
+
+    fun updatePlaylists() {
+        _playlistsState.value = playlistsInteractor.getPlaylists()
+    }
+
+    fun onPlaylistClicked(playlist: Playlist): Boolean {
+        return if (track.trackId in playlist.trackIds) {
+            false
+        } else {
+            playlistsInteractor.addTrackToPlaylist(track, playlist)
+            true
+        }
     }
 
     companion object {

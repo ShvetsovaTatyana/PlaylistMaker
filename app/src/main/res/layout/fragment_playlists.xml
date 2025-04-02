@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/screen_background"
@@ -9,11 +10,12 @@
     android:gravity="center_horizontal">
 
     <Button
+        android:id="@+id/create_playlist_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="24dp"
-        android:backgroundTint="@color/search_title"
+        android:backgroundTint="@color/text_color"
         android:fontFamily="@font/ys_display_medium"
         android:text="@string/new_playlist"
         android:textAllCaps="false"
@@ -21,20 +23,35 @@
         android:textSize="14sp"
         app:cornerRadius="54dp" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        tools:itemCount="3"
+        tools:spanCount="2"
+        tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        tools:listitem="@layout/playlist_item" />
+
     <ImageView
+        android:id="@+id/place_holder_empty_image"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_marginTop="46dp"
-        app:srcCompat="@drawable/placeholder_empty" />
+        app:srcCompat="@drawable/placeholder_empty"
+        android:visibility="gone" />
 
     <TextView
+        android:id="@+id/place_holder_empty_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/ys_display_medium"
         android:text="@string/empty_playlists"
         android:textAlignment="center"
-        android:textColor="@color/search_title"
-        android:textSize="19sp" />
+        android:textColor="@color/text_color"
+        android:textSize="19sp"
+        android:visibility="gone" />
 
 </LinearLayout>

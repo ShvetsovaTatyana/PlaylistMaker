@@ -2,21 +2,24 @@ package com.github.ilyashvetsov.playlistmaker.search.ui
 
 import android.annotation.SuppressLint
 import android.content.Context.INPUT_METHOD_SERVICE
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.github.ilyashvetsov.playlistmaker.R
 import com.github.ilyashvetsov.playlistmaker.databinding.FragmentSearchBinding
-import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerActivity
+import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerFragment
 import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
 import com.github.ilyashvetsov.playlistmaker.track.presentation.AdapterTrack
+import com.github.ilyashvetsov.playlistmaker.util.MyTextWatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -184,9 +187,10 @@ class SearchFragment : Fragment() {
     }
 
     private fun openAudioPlayer(track: Track) {
-        val intent = Intent(context, AudioPlayerActivity::class.java)
-        intent.putExtra(AudioPlayerActivity.TRACK_KEY, track)
-        startActivity(intent)
+        findNavController().navigate(
+            resId = R.id.action_navigation_search_to_navigation_audio_player,
+            args = bundleOf(AudioPlayerFragment.TRACK_KEY to track)
+        )
     }
 
     private fun hideKeyboard() = with(binding) {
