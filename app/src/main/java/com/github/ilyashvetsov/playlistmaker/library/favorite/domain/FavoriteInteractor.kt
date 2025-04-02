@@ -1,30 +1,31 @@
 package com.github.ilyashvetsov.playlistmaker.library.favorite.domain
 
 import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
+import kotlinx.coroutines.flow.Flow
 
 interface FavoriteInteractor {
-    fun addTrack(track: Track)
-    fun removeTrack(track: Track)
-    fun getTracks(): List<Track>
-    fun isFavorite(track: Track): Boolean
+    suspend fun addTrack(track: Track)
+    suspend fun removeTrack(track: Track)
+    fun getTracks(): Flow<List<Track>>
+    suspend fun isFavorite(track: Track): Boolean
 }
 
 class FavoriteInteractorImpl(
     private val repository: FavoriteRepository
 ): FavoriteInteractor {
-    override fun addTrack(track: Track) {
+    override suspend fun addTrack(track: Track) {
         repository.addTrack(track)
     }
 
-    override fun removeTrack(track: Track) {
+    override suspend fun removeTrack(track: Track) {
         repository.removeTrack(track)
     }
 
-    override fun getTracks(): List<Track> {
+    override fun getTracks(): Flow<List<Track>> {
         return repository.getTracks()
     }
 
-    override fun isFavorite(track: Track): Boolean {
+    override suspend fun isFavorite(track: Track): Boolean {
         return repository.getTrackById(track.trackId) != null
     }
 }

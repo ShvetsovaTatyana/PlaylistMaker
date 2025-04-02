@@ -104,7 +104,7 @@ class AudioPlayerFragment : Fragment() {
             }
             addButton.setOnClickListener { showBottomSheet() }
             playButton.setOnClickListener { viewModel.playbackControl() }
-            likeButton.setOnClickListener { viewModel.addTrackToFavorite(track) }
+            likeButton.setOnClickListener { viewModel.addTrackToFavorite() }
 
             bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet).apply {
                 state = BottomSheetBehavior.STATE_HIDDEN
@@ -175,7 +175,6 @@ class AudioPlayerFragment : Fragment() {
     }
 
     private fun showBottomSheet() {
-        viewModel.updatePlaylists()
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 

@@ -4,23 +4,27 @@ import com.github.ilyashvetsov.playlistmaker.library.root.data.db.AppDatabase
 import com.github.ilyashvetsov.playlistmaker.library.favorite.data.db.FavoriteDao
 import com.github.ilyashvetsov.playlistmaker.library.favorite.domain.FavoriteRepository
 import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class FavoriteRepositoryImpl(appDatabase: AppDatabase): FavoriteRepository {
     private val dao: FavoriteDao = appDatabase.getFavoriteDao()
 
-    override fun addTrack(track: Track) {
+    override suspend fun addTrack(track: Track) {
         dao.insertTrack(favoriteTrackEntity = track.toFavoriteTrackEntity())
     }
 
-    override fun removeTrack(track: Track) {
+    override suspend fun removeTrack(track: Track) {
         dao.deleteTrack(favoriteTrackEntity = track.toFavoriteTrackEntity())
     }
 
-    override fun getTracks(): List<Track> {
-        return dao.getTracks().map { trackEntity -> trackEntity.toDomain() }
+    override fun getTracks(): Flow<List<Track>> {
+        return dao.getTracks().map { trackList ->
+            trackList.map { trackEntity -> trackEntity.toDomain() }
+        }
     }
 
-    override fun getTrackById(trackId: Int): Track? {
+    override suspend fun getTrackById(trackId: Int): Track? {
         return dao.getTrackById(trackId)
             .firstOrNull()
             ?.toDomain()

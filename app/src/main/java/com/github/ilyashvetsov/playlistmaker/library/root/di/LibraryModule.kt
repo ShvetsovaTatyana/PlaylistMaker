@@ -24,7 +24,6 @@ import org.koin.dsl.module
 val libraryModule = module {
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
-            .allowMainThreadQueries() // TODO удалить
             .build()
     }
 

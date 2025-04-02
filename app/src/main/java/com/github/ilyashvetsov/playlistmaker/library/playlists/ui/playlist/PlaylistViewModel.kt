@@ -3,9 +3,11 @@ package com.github.ilyashvetsov.playlistmaker.library.playlists.ui.playlist
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.github.ilyashvetsov.playlistmaker.library.playlists.domain.PlaylistsInteractor
 import com.github.ilyashvetsov.playlistmaker.library.playlists.domain.model.Playlist
 import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
+import kotlinx.coroutines.launch
 
 class PlaylistViewModel(
     private val interactor: PlaylistsInteractor,
@@ -22,17 +24,19 @@ class PlaylistViewModel(
 
     fun update(playlist: Playlist) {
         _playlistState.value = playlist
-        _allTimeState.value = interactor.getAllTime(playlist) / 1000 / 60
-
-        val trackList = interactor.getTracks(playlist)
-        _screenState.value = if (trackList.isEmpty()) {
-            PlaylistScreenState.Empty
-        } else {
-            PlaylistScreenState.Data(trackList)
+        viewModelScope.launch {
+            _allTimeState.value = interactor.getAllTime(playlist) / 1000 / 60
+            interactor.getTracks(playlist).collect { trackList ->
+                _screenState.value = if (trackList.isEmpty()) {
+                    PlaylistScreenState.Empty
+                } else {
+                    PlaylistScreenState.Data(trackList)
+                }
+            }
         }
     }
 
-    fun removeTrack(track: Track) {
+    fun removeTrack(track: Track) = viewModelScope.launch {
         playlistState.value?.let { playlist ->
             interactor.removeTrackFromPlaylist(track, playlist)
 
@@ -44,7 +48,18 @@ class PlaylistViewModel(
         }
     }
 
-    fun removePlaylist() = playlistState.value?.let(interactor::removePlaylist)
+    fun removePlaylist() = viewModelScope.launch {
+        playlistState.value?.let { playlist ->
+            interactor.removePlaylist(playlist)
+        }
+    }
 
-    fun share() = playlistState.value?.let(interactor::share)
+    fun share() = playlistState.value?.let { playlist ->
+        val trackList = if (screenState.value is PlaylistScreenState.Data) {
+            (screenState.value as PlaylistScreenState.Data).trackList
+        } else {
+            emptyList()
+        }
+        interactor.share(playlist, trackList)
+    }
 }

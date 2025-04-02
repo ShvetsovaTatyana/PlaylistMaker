@@ -45,6 +45,7 @@ class PlaylistsFragment : BaseSectionFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.init()
 
         with(binding) {
             createPlaylistButton.setOnClickListener {
@@ -77,11 +78,6 @@ class PlaylistsFragment : BaseSectionFragment() {
                 }
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.updateData()
     }
 
     private fun playlistClickDebounce(): Boolean {

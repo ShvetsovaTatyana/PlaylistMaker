@@ -3,15 +3,16 @@ package com.github.ilyashvetsov.playlistmaker.library.playlists.ui.createplaylis
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.github.ilyashvetsov.playlistmaker.library.playlists.domain.PlaylistsInteractor
 import com.github.ilyashvetsov.playlistmaker.library.playlists.domain.model.Playlist
+import kotlinx.coroutines.launch
 
 class CreatePlaylistViewModel(
     private val interactor: PlaylistsInteractor,
 ) : ViewModel() {
-    private val _screenState: MutableLiveData<CreatePlaylistScreenState> = MutableLiveData(
-        CreatePlaylistScreenState.EMPTY
-    )
+    private val _screenState: MutableLiveData<CreatePlaylistScreenState> =
+        MutableLiveData(CreatePlaylistScreenState.EMPTY)
     val screenState: LiveData<CreatePlaylistScreenState> = _screenState
 
     fun setImagePath(imagePath: String) {
@@ -26,7 +27,7 @@ class CreatePlaylistViewModel(
         _screenState.value = _screenState.value?.copy(description = description)
     }
 
-    fun onCreateButtonClicked() {
+    fun onCreateButtonClicked() = viewModelScope.launch {
         screenState.value?.let {
             interactor.addPlaylist(
                 playlist = Playlist(
