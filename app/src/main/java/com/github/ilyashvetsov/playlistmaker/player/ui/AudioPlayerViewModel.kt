@@ -83,6 +83,10 @@ class AudioPlayerViewModel(
         }
     }
 
+    fun resetPlayer() {
+        audioPlayerInteractor.resetPlayer()
+    }
+
     fun releasePlayer() {
         audioPlayerInteractor.releasePlayer()
     }

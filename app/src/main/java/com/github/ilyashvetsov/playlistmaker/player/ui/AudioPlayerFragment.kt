@@ -127,6 +127,7 @@ class AudioPlayerFragment : Fragment() {
             recyclerView.adapter = adapter
 
             buttonNewPlaylist.setOnClickListener {
+                viewModel.resetPlayer()
                 findNavController().navigate(R.id.action_navigation_audio_player_to_navigation_create_playlist)
             }
 

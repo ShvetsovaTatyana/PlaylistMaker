@@ -9,5 +9,6 @@ interface AudioPlayerRepository {
     )
     fun startPlayer()
     fun pausePlayer()
+    fun resetPlayer()
     fun releasePlayer()
 }
