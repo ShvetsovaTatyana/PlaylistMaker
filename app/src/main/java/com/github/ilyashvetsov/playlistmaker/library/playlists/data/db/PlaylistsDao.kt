@@ -5,7 +5,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.github.ilyashvetsov.playlistmaker.library.favorite.data.db.entity.FavoriteTrackEntity
 import com.github.ilyashvetsov.playlistmaker.library.playlists.data.db.entity.PlaylistEntity
 
 @Dao

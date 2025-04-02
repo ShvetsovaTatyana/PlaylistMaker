@@ -32,10 +32,12 @@ class PlaylistsRepositoryImpl(appDatabase: AppDatabase) : PlaylistsRepository {
         playlistsDao.updatePlaylist(
             playlistEntity = playlist.copy(trackIds = mutableList).toEntity()
         )
+        removeTrackIfNeeded(track)
     }
 
     override fun removePlaylist(playlist: Playlist) {
         playlistsDao.deletePlaylist(playlistEntity = playlist.toEntity())
+        getTracks(playlist).forEach(::removeTrackIfNeeded)
     }
 
     override fun getPlaylists(): List<Playlist> {
@@ -44,5 +46,17 @@ class PlaylistsRepositoryImpl(appDatabase: AppDatabase) : PlaylistsRepository {
 
     override fun getTracks(playlist: Playlist): List<Track> {
         return tracksDao.getTracks(playlist.trackIds).map { trackEntity -> trackEntity.toDomain() }
+    }
+
+    /**
+     * Удаляет [track], если его нет ни в одном плейлисте
+     */
+    private fun removeTrackIfNeeded(track: Track) {
+        getPlaylists().forEach {
+            if (track.trackId in it.trackIds) {
+                return
+            }
+        }
+        tracksDao.deleteTrack(trackEntity = track.toTrackEntity())
     }
 }
