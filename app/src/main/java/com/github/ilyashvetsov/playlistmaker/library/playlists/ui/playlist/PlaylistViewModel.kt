@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.github.ilyashvetsov.playlistmaker.library.playlists.domain.PlaylistsInteractor
 import com.github.ilyashvetsov.playlistmaker.library.playlists.domain.model.Playlist
 import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class PlaylistViewModel(
@@ -22,11 +23,12 @@ class PlaylistViewModel(
     private val _screenState: MutableLiveData<PlaylistScreenState> = MutableLiveData(PlaylistScreenState.Loading)
     val screenState: LiveData<PlaylistScreenState> = _screenState
 
-    fun update(playlist: Playlist) {
-        _playlistState.value = playlist
-        viewModelScope.launch {
-            _allTimeState.value = interactor.getAllTime(playlist) / 1000 / 60
-            interactor.getTracks(playlist).collect { trackList ->
+    fun update(playlistId: Int) = viewModelScope.launch {
+        interactor.getPlaylistById(playlistId).collect { playlist ->
+            _playlistState.value = playlist
+            viewModelScope.launch {
+                _allTimeState.value = interactor.getAllTime(playlist) / 1000 / 60
+                val trackList = interactor.getTracks(playlist).first()
                 _screenState.value = if (trackList.isEmpty()) {
                     PlaylistScreenState.Empty
                 } else {
@@ -39,12 +41,6 @@ class PlaylistViewModel(
     fun removeTrack(track: Track) = viewModelScope.launch {
         playlistState.value?.let { playlist ->
             interactor.removeTrackFromPlaylist(track, playlist)
-
-            val mutableList = mutableListOf<Int>()
-            mutableList.addAll(playlist.trackIds)
-            mutableList.remove(track.trackId)
-
-            update(playlist = playlist.copy(trackIds = mutableList))
         }
     }
 

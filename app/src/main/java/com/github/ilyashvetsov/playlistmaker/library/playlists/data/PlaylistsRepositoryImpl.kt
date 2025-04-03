@@ -49,6 +49,11 @@ class PlaylistsRepositoryImpl(appDatabase: AppDatabase) : PlaylistsRepository {
         }
     }
 
+    override fun getPlaylistById(playlistId: Int): Flow<Playlist> {
+        return playlistsDao.getPlaylistById(playlistId)
+            .map { playlistEntity -> playlistEntity.toDomain() }
+    }
+
     override fun getPlaylists(): Flow<List<Playlist>> {
         return playlistsDao.getPlaylists().map { list ->
             list.map { playlistEntity -> playlistEntity.toDomain() }

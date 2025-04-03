@@ -101,7 +101,7 @@ class PlaylistsFragment : BaseSectionFragment() {
     private fun openPlaylistPage(playlist: Playlist) {
         findNavController().navigate(
             resId = R.id.action_navigation_library_to_navigation_playlist,
-            args = bundleOf(PlaylistFragment.PLAYLIST_KEY to playlist)
+            args = bundleOf(PlaylistFragment.PLAYLIST_KEY to playlist.id)
         )
     }
 

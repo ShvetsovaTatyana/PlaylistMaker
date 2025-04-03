@@ -14,6 +14,7 @@ interface PlaylistsInteractor {
     suspend fun addTrackToPlaylist(track: Track, playlist: Playlist)
     suspend fun removeTrackFromPlaylist(track: Track, playlist: Playlist)
     suspend fun removePlaylist(playlist: Playlist)
+    fun getPlaylistById(playlistId: Int): Flow<Playlist>
     fun getPlaylists(): Flow<List<Playlist>>
     fun getTracks(playlist: Playlist): Flow<List<Track>>
     suspend fun getAllTime(playlist: Playlist): Int
@@ -43,6 +44,10 @@ class PlaylistsInteractorImpl(
 
     override suspend fun removePlaylist(playlist: Playlist) {
         repository.removePlaylist(playlist)
+    }
+
+    override fun getPlaylistById(playlistId: Int): Flow<Playlist> {
+        return repository.getPlaylistById(playlistId)
     }
 
     override fun getPlaylists(): Flow<List<Playlist>> {

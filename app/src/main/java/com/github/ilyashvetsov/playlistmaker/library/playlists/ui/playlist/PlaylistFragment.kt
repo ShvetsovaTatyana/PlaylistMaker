@@ -19,7 +19,6 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.github.ilyashvetsov.playlistmaker.R
 import com.github.ilyashvetsov.playlistmaker.databinding.FragmentPlaylistBinding
-import com.github.ilyashvetsov.playlistmaker.library.playlists.domain.model.Playlist
 import com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerFragment
 import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
 import com.github.ilyashvetsov.playlistmaker.track.presentation.AdapterTrack
@@ -61,10 +60,8 @@ class PlaylistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val playlistArgs = requireArguments().getParcelable<Playlist>(PLAYLIST_KEY)
-            ?: throw IllegalArgumentException("playlist is null")
-
-        viewModel.update(playlistArgs)
+        val playlistId = requireArguments().getInt(PLAYLIST_KEY)
+        viewModel.update(playlistId)
 
         with(binding) {
             buttonBackArrow.setOnClickListener {
