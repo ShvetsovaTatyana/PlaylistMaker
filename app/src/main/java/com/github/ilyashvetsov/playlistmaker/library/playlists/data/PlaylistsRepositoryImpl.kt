@@ -18,6 +18,10 @@ class PlaylistsRepositoryImpl(appDatabase: AppDatabase) : PlaylistsRepository {
         playlistsDao.insertPlaylist(playlistEntity = playlist.toEntity())
     }
 
+    override suspend fun updatePlaylist(playlist: Playlist) {
+        playlistsDao.updatePlaylist(playlistEntity = playlist.toEntity())
+    }
+
     override suspend fun addTrackToPlaylist(track: Track, playlist: Playlist) {
         val mutableList = mutableListOf<Int>()
         mutableList.addAll(playlist.trackIds)

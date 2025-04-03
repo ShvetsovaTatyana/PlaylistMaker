@@ -72,7 +72,7 @@ class AudioPlayerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val track = requireArguments().getParcelable<Track>(TRACK_KEY)
-            ?: throw Exception("track is null")
+            ?: throw IllegalArgumentException("track is null")
 
         viewModel.init(track)
 

@@ -61,10 +61,10 @@ class PlaylistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val initPlaylist = requireArguments().getParcelable<Playlist>(PLAYLIST_KEY)
-            ?: throw Exception("playlist is null")
+        val playlistArgs = requireArguments().getParcelable<Playlist>(PLAYLIST_KEY)
+            ?: throw IllegalArgumentException("playlist is null")
 
-        viewModel.update(initPlaylist)
+        viewModel.update(playlistArgs)
 
         with(binding) {
             buttonBackArrow.setOnClickListener {
@@ -193,7 +193,12 @@ class PlaylistFragment : Fragment() {
     }
 
     private fun edit() {
-
+        viewModel.playlistState.value?.let { playlist ->
+            findNavController().navigate(
+                resId = R.id.action_navigation_playlist_to_navigation_create_playlist,
+                args = bundleOf(PLAYLIST_KEY to playlist)
+            )
+        }
     }
 
     private fun removePlaylist() {

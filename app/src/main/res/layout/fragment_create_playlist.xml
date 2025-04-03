@@ -27,6 +27,7 @@
             app:tint="@color/arrow" />
 
         <TextView
+            android:id="@+id/title_textView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="16dp"
@@ -99,7 +100,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/create_button"
+        android:id="@+id/save_button"
         app:layout_constraintDimensionRatio="h,7.4:1"
         android:layout_width="match_parent"
         android:layout_height="0dp"

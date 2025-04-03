@@ -48,11 +48,6 @@
         android:name="com.github.ilyashvetsov.playlistmaker.player.ui.AudioPlayerFragment"
         tools:layout="@layout/fragment_audio_player">
 
-        <argument
-            android:name="track"
-            app:argType="com.github.ilyashvetsov.playlistmaker.track.domain.model.Track"
-            android:defaultValue="@null" />
-
         <action
             android:id="@+id/action_navigation_audio_player_to_navigation_create_playlist"
             app:destination="@id/navigation_create_playlist" />
@@ -73,6 +68,10 @@
         <action
             android:id="@+id/action_navigation_playlist_to_navigation_audio_player"
             app:destination="@id/navigation_audio_player" />
+
+        <action
+            android:id="@+id/action_navigation_playlist_to_navigation_create_playlist"
+            app:destination="@id/navigation_create_playlist" />
 
     </fragment>
 

@@ -10,6 +10,7 @@ import java.util.Locale
 
 interface PlaylistsInteractor {
     suspend fun addPlaylist(playlist: Playlist)
+    suspend fun updatePlaylist(playlist: Playlist)
     suspend fun addTrackToPlaylist(track: Track, playlist: Playlist)
     suspend fun removeTrackFromPlaylist(track: Track, playlist: Playlist)
     suspend fun removePlaylist(playlist: Playlist)
@@ -26,6 +27,10 @@ class PlaylistsInteractorImpl(
 
     override suspend fun addPlaylist(playlist: Playlist) {
         repository.addPlaylist(playlist)
+    }
+
+    override suspend fun updatePlaylist(playlist: Playlist) {
+        repository.updatePlaylist(playlist)
     }
 
     override suspend fun addTrackToPlaylist(track: Track, playlist: Playlist) {

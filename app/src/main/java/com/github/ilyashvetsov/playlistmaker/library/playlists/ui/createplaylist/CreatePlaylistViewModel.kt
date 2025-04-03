@@ -11,9 +11,25 @@ import kotlinx.coroutines.launch
 class CreatePlaylistViewModel(
     private val interactor: PlaylistsInteractor,
 ) : ViewModel() {
+
+    private var editablePlaylist: Playlist? = null
+    val isEditMode: Boolean
+        get() = editablePlaylist != null
+
     private val _screenState: MutableLiveData<CreatePlaylistScreenState> =
         MutableLiveData(CreatePlaylistScreenState.EMPTY)
     val screenState: LiveData<CreatePlaylistScreenState> = _screenState
+
+    fun init(editablePlaylist: Playlist?) {
+        editablePlaylist?.let { playlist ->
+            this.editablePlaylist = playlist
+            _screenState.value = CreatePlaylistScreenState(
+                name = playlist.name,
+                description = playlist.description,
+                imagePath = playlist.imagePath
+            )
+        }
+    }
 
     fun setImagePath(imagePath: String) {
         _screenState.value = _screenState.value?.copy(imagePath = imagePath)
@@ -27,17 +43,27 @@ class CreatePlaylistViewModel(
         _screenState.value = _screenState.value?.copy(description = description)
     }
 
-    fun onCreateButtonClicked() = viewModelScope.launch {
-        screenState.value?.let {
-            interactor.addPlaylist(
-                playlist = Playlist(
-                    id = 0,
-                    name = it.name,
-                    description = it.description,
-                    imagePath = it.imagePath,
-                    trackIds = emptyList()
+    fun onSaveButtonClicked() = viewModelScope.launch {
+        screenState.value?.let { data ->
+            if (isEditMode) {
+                interactor.updatePlaylist(
+                    playlist = editablePlaylist!!.copy(
+                        name = data.name,
+                        description = data.description,
+                        imagePath = data.imagePath,
+                    )
                 )
-            )
+            } else {
+                interactor.addPlaylist(
+                    playlist = Playlist(
+                        id = 0,
+                        name = data.name,
+                        description = data.description,
+                        imagePath = data.imagePath,
+                        trackIds = emptyList()
+                    )
+                )
+            }
         }
     }
 }

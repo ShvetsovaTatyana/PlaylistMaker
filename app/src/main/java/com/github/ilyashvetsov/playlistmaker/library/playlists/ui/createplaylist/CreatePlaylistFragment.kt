@@ -21,6 +21,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.github.ilyashvetsov.playlistmaker.R
 import com.github.ilyashvetsov.playlistmaker.databinding.FragmentCreatePlaylistBinding
+import com.github.ilyashvetsov.playlistmaker.library.playlists.domain.model.Playlist
 import com.github.ilyashvetsov.playlistmaker.util.MyTextWatcher
 import com.github.ilyashvetsov.playlistmaker.util.px
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -42,6 +43,8 @@ class CreatePlaylistFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initEditModeIfNeeded()
+
         val pickMedia = registerForActivityResult(
             ActivityResultContracts.PickVisualMedia()
         ) { uri ->
@@ -78,15 +81,12 @@ class CreatePlaylistFragment : Fragment() {
                 MyTextWatcher { text, _, _, _ -> viewModel.onDescriptionChanged(text.toString()) }
             )
 
-            createButton.setOnClickListener {
-                viewModel.onCreateButtonClicked()
-                val playlistName = viewModel.screenState.value?.name.orEmpty()
-                Toast.makeText(requireContext(), "Плейлист $playlistName создан", Toast.LENGTH_LONG).show()
-                findNavController().navigateUp()
+            saveButton.setOnClickListener {
+               onSaveButtonClicked()
             }
 
             viewModel.screenState.observe(viewLifecycleOwner) { state ->
-                createButton.isEnabled = state.isButtonEnabled
+                saveButton.isEnabled = state.isButtonEnabled
                 state.imagePath?.let { path ->
                     Glide.with(this@CreatePlaylistFragment)
                         .load(File(path).toUri())
@@ -99,11 +99,24 @@ class CreatePlaylistFragment : Fragment() {
     }
 
     private fun onBackPressed() {
+        if (viewModel.isEditMode) {
+            findNavController().navigateUp()
+            return
+        }
         if (viewModel.screenState.value?.isNotEmpty() == true) {
             showDialog()
         } else {
             findNavController().navigateUp()
         }
+    }
+
+    private fun onSaveButtonClicked() {
+        viewModel.onSaveButtonClicked()
+        if (viewModel.isEditMode.not()) {
+            val playlistName = viewModel.screenState.value?.name.orEmpty()
+            Toast.makeText(requireContext(), "Плейлист $playlistName создан", Toast.LENGTH_LONG).show()
+        }
+        findNavController().navigateUp()
     }
 
     private fun showDialog() {
@@ -134,5 +147,25 @@ class CreatePlaylistFragment : Fragment() {
             .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
 
         return file.path
+    }
+
+    private fun initEditModeIfNeeded() {
+        val editablePlaylist = arguments?.getParcelable<Playlist>(PLAYLIST_KEY)
+        viewModel.init(editablePlaylist)
+        if (viewModel.isEditMode) {
+            with(binding) {
+                saveButton.text = "Сохранить"
+                titleTextView.text = "Редактировать"
+
+                viewModel.screenState.value?.let { state ->
+                    nameField.setText(state.name)
+                    descriptionField.setText(state.description)
+                }
+            }
+        }
+    }
+
+    companion object {
+        const val PLAYLIST_KEY = "playlist_key"
     }
 }
