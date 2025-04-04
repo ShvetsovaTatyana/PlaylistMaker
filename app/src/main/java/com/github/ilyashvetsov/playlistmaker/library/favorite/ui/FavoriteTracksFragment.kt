@@ -46,6 +46,7 @@ class FavoriteTracksFragment : BaseSectionFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.init()
 
         with(binding) {
             recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -74,11 +75,6 @@ class FavoriteTracksFragment : BaseSectionFragment() {
                 }
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.updateData()
     }
 
     private fun trackClickDebounce(): Boolean {

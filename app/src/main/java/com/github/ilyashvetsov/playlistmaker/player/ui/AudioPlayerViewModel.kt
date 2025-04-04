@@ -3,11 +3,14 @@ package com.github.ilyashvetsov.playlistmaker.player.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.github.ilyashvetsov.playlistmaker.library.favorite.domain.FavoriteInteractor
 import com.github.ilyashvetsov.playlistmaker.library.playlists.domain.PlaylistsInteractor
 import com.github.ilyashvetsov.playlistmaker.library.playlists.domain.model.Playlist
 import com.github.ilyashvetsov.playlistmaker.player.domain.AudioPlayerInteractor
 import com.github.ilyashvetsov.playlistmaker.track.domain.model.Track
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -34,7 +37,12 @@ class AudioPlayerViewModel(
 
     fun init(track: Track) {
         this.track = track
-        _isFavoriteState.value = favoriteInteractor.isFavorite(track)
+        viewModelScope.launch(Dispatchers.IO) {
+            _isFavoriteState.postValue(favoriteInteractor.isFavorite(track))
+            playlistsInteractor.getPlaylists().collect { playlists ->
+                _playlistsState.postValue(playlists)
+            }
+        }
     }
 
     fun preparePlayer(url: String) {
@@ -75,28 +83,30 @@ class AudioPlayerViewModel(
         }
     }
 
+    fun resetPlayer() {
+        audioPlayerInteractor.resetPlayer()
+    }
+
     fun releasePlayer() {
         audioPlayerInteractor.releasePlayer()
     }
 
-    fun addTrackToFavorite(track: Track) {
+    fun addTrackToFavorite() = viewModelScope.launch(Dispatchers.IO) {
         if (favoriteInteractor.isFavorite(track)) {
             favoriteInteractor.removeTrack(track)
         } else {
             favoriteInteractor.addTrack(track)
         }
-        _isFavoriteState.value = favoriteInteractor.isFavorite(track)
-    }
-
-    fun updatePlaylists() {
-        _playlistsState.value = playlistsInteractor.getPlaylists()
+        _isFavoriteState.postValue(favoriteInteractor.isFavorite(track))
     }
 
     fun onPlaylistClicked(playlist: Playlist): Boolean {
         return if (track.trackId in playlist.trackIds) {
             false
         } else {
-            playlistsInteractor.addTrackToPlaylist(track, playlist)
+            viewModelScope.launch {
+                playlistsInteractor.addTrackToPlaylist(track, playlist)
+            }
             true
         }
     }

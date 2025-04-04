@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import java.util.Date
 
 @Entity(tableName = "favorite_table")
-data class TrackEntity(
+data class FavoriteTrackEntity(
     @PrimaryKey
     val trackId: Int,
     val trackName: String,

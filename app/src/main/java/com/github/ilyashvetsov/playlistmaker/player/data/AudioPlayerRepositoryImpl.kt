@@ -1,8 +1,6 @@
 package com.github.ilyashvetsov.playlistmaker.player.data
 
 import android.media.MediaPlayer
-import android.os.Handler
-import android.os.Looper
 import com.github.ilyashvetsov.playlistmaker.player.domain.AudioPlayerRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -11,7 +9,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class AudioPlayerRepositoryImpl(
-    private val mediaPlayer: MediaPlayer
+    private var mediaPlayer: MediaPlayer
 ): AudioPlayerRepository {
     private var updateUI: ((Int) -> Unit)? = null
     private var job: Job? = null
@@ -22,14 +20,14 @@ class AudioPlayerRepositoryImpl(
         onCompletion: () -> Unit,
         onUpdateUI: (Int) -> Unit
     ) {
-        mediaPlayer.setDataSource(url)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            onPrepared.invoke()
-        }
-        mediaPlayer.setOnCompletionListener {
-            onCompletion()
-            job?.cancel()
+        mediaPlayer.apply {
+            setDataSource(url)
+            prepareAsync()
+            setOnPreparedListener { onPrepared.invoke() }
+            setOnCompletionListener {
+                onCompletion()
+                job?.cancel()
+            }
         }
         updateUI = onUpdateUI
     }
@@ -47,6 +45,10 @@ class AudioPlayerRepositoryImpl(
     override fun pausePlayer() {
         mediaPlayer.pause()
         job?.cancel()
+    }
+
+    override fun resetPlayer() {
+        mediaPlayer.reset()
     }
 
     override fun releasePlayer() {

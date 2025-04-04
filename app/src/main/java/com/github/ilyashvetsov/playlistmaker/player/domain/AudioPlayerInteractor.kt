@@ -9,6 +9,7 @@ interface AudioPlayerInteractor {
     )
     fun startPlayer()
     fun pausePlayer()
+    fun resetPlayer()
     fun releasePlayer()
 }
 
@@ -31,6 +32,10 @@ class AudioPlayerInteractorImpl(
 
     override fun pausePlayer() {
         repository.pausePlayer()
+    }
+
+    override fun resetPlayer() {
+        repository.resetPlayer()
     }
 
     override fun releasePlayer() {

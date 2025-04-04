@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.ilyashvetsov.playlistmaker.R
 import com.github.ilyashvetsov.playlistmaker.databinding.FragmentPlaylistsBinding
 import com.github.ilyashvetsov.playlistmaker.library.playlists.domain.model.Playlist
+import com.github.ilyashvetsov.playlistmaker.library.playlists.ui.playlist.PlaylistFragment
 import com.github.ilyashvetsov.playlistmaker.library.root.ui.BaseSectionFragment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -43,6 +45,7 @@ class PlaylistsFragment : BaseSectionFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.init()
 
         with(binding) {
             createPlaylistButton.setOnClickListener {
@@ -77,11 +80,6 @@ class PlaylistsFragment : BaseSectionFragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.updateData()
-    }
-
     private fun playlistClickDebounce(): Boolean {
         val current = isPlaylistClickAllowed
         if (isPlaylistClickAllowed) {
@@ -100,7 +98,12 @@ class PlaylistsFragment : BaseSectionFragment() {
         adapter.notifyDataSetChanged()
     }
 
-    private fun openPlaylistPage(playlist: Playlist) = Unit
+    private fun openPlaylistPage(playlist: Playlist) {
+        findNavController().navigate(
+            resId = R.id.action_navigation_library_to_navigation_playlist,
+            args = bundleOf(PlaylistFragment.PLAYLIST_KEY to playlist.id)
+        )
+    }
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L

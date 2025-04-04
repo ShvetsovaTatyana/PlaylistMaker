@@ -72,7 +72,7 @@ class AudioPlayerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val track = requireArguments().getParcelable<Track>(TRACK_KEY)
-            ?: throw Exception("track is null")
+            ?: throw IllegalArgumentException("track is null")
 
         viewModel.init(track)
 
@@ -104,7 +104,7 @@ class AudioPlayerFragment : Fragment() {
             }
             addButton.setOnClickListener { showBottomSheet() }
             playButton.setOnClickListener { viewModel.playbackControl() }
-            likeButton.setOnClickListener { viewModel.addTrackToFavorite(track) }
+            likeButton.setOnClickListener { viewModel.addTrackToFavorite() }
 
             bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet).apply {
                 state = BottomSheetBehavior.STATE_HIDDEN
@@ -127,6 +127,7 @@ class AudioPlayerFragment : Fragment() {
             recyclerView.adapter = adapter
 
             buttonNewPlaylist.setOnClickListener {
+                viewModel.resetPlayer()
                 findNavController().navigate(R.id.action_navigation_audio_player_to_navigation_create_playlist)
             }
 
@@ -175,7 +176,6 @@ class AudioPlayerFragment : Fragment() {
     }
 
     private fun showBottomSheet() {
-        viewModel.updatePlaylists()
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 

@@ -7,13 +7,14 @@ interface SharingInteractor {
     fun shareApp()
     fun openTerms()
     fun openSupport()
+    fun shareText(text: String)
 }
 
 class SharingInteractorImpl(
     private val externalNavigator: ExternalNavigator
 ) : SharingInteractor {
     override fun shareApp() {
-        externalNavigator.shareLink(getShareAppLink())
+        externalNavigator.share(getShareAppLink())
     }
 
     override fun openTerms() {
@@ -22,6 +23,10 @@ class SharingInteractorImpl(
 
     override fun openSupport() {
         externalNavigator.openEmail(getSupportEmailData())
+    }
+
+    override fun shareText(text: String) {
+        externalNavigator.share(text)
     }
 
     private fun getShareAppLink(): String {

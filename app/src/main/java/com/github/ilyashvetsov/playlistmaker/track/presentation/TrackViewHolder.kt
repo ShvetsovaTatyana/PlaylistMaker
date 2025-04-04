@@ -10,7 +10,8 @@ import java.util.Locale
 
 class TrackViewHolder(
     private val binding: TrackItemBinding,
-    private val onItemClickListener: (track: Track) -> Unit
+    private val onItemClickListener: (track: Track) -> Unit,
+    private val onItemLongClickListener: ((track: Track) -> Unit)?
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(model: Track) = with(binding) {
@@ -22,5 +23,9 @@ class TrackViewHolder(
         nameSinger.text = model.artistName
         timeSing.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis)
         itemView.setOnClickListener { onItemClickListener.invoke(model) }
+        itemView.setOnLongClickListener {
+            onItemLongClickListener?.invoke(model)
+            true
+        }
     }
 }

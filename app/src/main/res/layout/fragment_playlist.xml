@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bright_gray">
+
+        <ImageView
+            android:id="@+id/button_back_arrow"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/arrow_back"
+            app:tint="@color/arrow" />
+
+        <ImageView
+            android:id="@+id/iv_imageAlbum"
+            app:layout_constraintDimensionRatio="h,1:1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="24dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/placeholder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_back_arrow" />
+
+        <TextView
+            android:id="@+id/name_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:textSize="24sp"
+            android:textColor="@color/YP_Black"
+            android:fontFamily="@font/ys_display_bold"
+            app:layout_constraintTop_toBottomOf="@id/iv_imageAlbum"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Best songs 2021" />
+
+        <TextView
+            android:id="@+id/description_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:textSize="18sp"
+            android:textColor="@color/YP_Black"
+            android:fontFamily="@font/ys_display_regular"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/name_textView"
+            tools:text="2022" />
+
+        <TextView
+            android:id="@+id/all_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:textSize="18sp"
+            android:textColor="@color/YP_Black"
+            android:fontFamily="@font/ys_display_regular"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/description_textView"
+            tools:text="300 минут" />
+
+        <ImageView
+            android:id="@+id/iv_ic"
+            android:layout_width="13dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="14dp"
+            android:scaleType="center"
+            android:src="@drawable/ellipse_1"
+            app:tint="@color/YP_Black"
+            app:layout_constraintDimensionRatio="h,1:1"
+            app:layout_constraintStart_toEndOf="@+id/all_time"
+            app:layout_constraintTop_toBottomOf="@+id/description_textView" />
+
+        <TextView
+            android:id="@+id/track_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="8dp"
+            android:textSize="18sp"
+            android:textColor="@color/YP_Black"
+            android:fontFamily="@font/ys_display_regular"
+            app:layout_constraintStart_toEndOf="@id/iv_ic"
+            app:layout_constraintTop_toBottomOf="@+id/description_textView"
+            tools:text="98 треков" />
+
+        <ImageView
+            android:id="@+id/iv_share"
+            android:layout_width="24dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/share"
+            app:tint="@color/YP_Black"
+            app:layout_constraintDimensionRatio="h,1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/all_time" />
+
+        <ImageView
+            android:id="@+id/iv_more"
+            android:layout_width="24dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/more"
+            app:layout_constraintDimensionRatio="h,1:1"
+            app:layout_constraintStart_toEndOf="@id/iv_share"
+            app:layout_constraintTop_toBottomOf="@+id/all_time" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/bs"
+        android:background="@drawable/shape_bottom_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="200dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <View
+            android:layout_width="50dp"
+            android:layout_height="4dp"
+            android:background="@drawable/corner_rad44"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            tools:listitem="@layout/track_item" />
+
+        <TextView
+            android:id="@+id/place_holder_empty_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/ys_display_medium"
+            android:text="@string/empty_playlist"
+            android:textColor="@color/text_color"
+            android:textSize="19sp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/place_holder_empty_image"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/placeholder_empty"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/menu"
+        android:background="@drawable/shape_bottom_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="300dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <View
+            android:layout_width="50dp"
+            android:layout_height="4dp"
+            android:background="@drawable/corner_rad44"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/share_button"
+            style="@style/settingsActivityTextView"
+            android:layout_marginTop="8dp"
+            android:text="@string/share_playlist" />
+
+        <TextView
+            android:id="@+id/edit_button"
+            style="@style/settingsActivityTextView"
+            android:text="@string/edit_playlist" />
+
+        <TextView
+            android:id="@+id/remove_button"
+            style="@style/settingsActivityTextView"
+            android:text="@string/remove_playlist" />
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
